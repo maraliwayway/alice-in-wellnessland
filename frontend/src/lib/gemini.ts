@@ -1,25 +1,25 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import { getGeminiApiKey } from "@/lib/secrets";
 
 // Lazy singleton — initialized on first call, reused after
-let _genAI: GoogleGenerativeAI | null = null;
+let _genAI: GoogleGenAI | null = null;
 
-async function getGenAI(): Promise<GoogleGenerativeAI> {
+async function getGenAI(): Promise<GoogleGenAI> {
   if (!_genAI) {
     const apiKey = await getGeminiApiKey();
-    _genAI = new GoogleGenerativeAI(apiKey);
+    _genAI = new GoogleGenAI({ apiKey });
   }
   return _genAI;
 }
 
 export async function getGeminiFlash() {
   const genAI = await getGenAI();
-  return genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  return genAI;
 }
 
 export async function getGeminiEmbedding() {
   const genAI = await getGenAI();
-  return genAI.getGenerativeModel({ model: "text-embedding-004" });
+  return genAI;
 }
 
 export interface JournalAnalysis {
@@ -45,13 +45,13 @@ export async function analyzeJournalEntry(
   const systemPrompt = `You are a warm, wise AI companion for a co-op intern navigating their first tech job. You speak like a caring mentor — never clinical, never dismissive. Analyze this journal entry and return ONLY valid JSON with: mood (one word emotion), moodScore (1-10, 10=happiest), validation (1 sentence acknowledging their feelings without toxic positivity), clarity (1-2 sentence practical suggestion — e.g. how to communicate with their tech lead, how to frame a question, how to approach an unclear ticket), affirmation (1 warm encouraging sentence, can reference Alice in Wonderland characters subtly — Cheshire Cat, Caterpillar's 'Who are you?', etc.). Only return valid JSON, nothing else.`;
 
   try {
-    const model = await getGeminiFlash();
-    const result = await model.generateContent([
-      { text: systemPrompt },
-      { text: transcribedText },
-    ]);
+    const genAI = await getGeminiFlash();
+    const result = await genAI.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: [systemPrompt, transcribedText],
+    });
 
-    const responseText = result.response.text().trim();
+    const responseText = (result.text ?? "").trim();
     const cleaned = responseText
       .replace(/^```json\s*/i, "")
       .replace(/^```\s*/i, "")
@@ -65,7 +65,10 @@ export async function analyzeJournalEntry(
 }
 
 export async function getEmbedding(text: string): Promise<number[]> {
-  const model = await getGeminiEmbedding();
-  const result = await model.embedContent(text);
-  return result.embedding.values;
+  const genAI = await getGeminiEmbedding();
+  const result = await genAI.models.embedContent({
+    model: "text-embedding-004",
+    contents: text,
+  });
+  return result.embeddings?.[0]?.values ?? [];
 }
