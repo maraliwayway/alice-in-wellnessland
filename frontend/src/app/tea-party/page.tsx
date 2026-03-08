@@ -190,6 +190,11 @@ export default async function TeaPartyPage() {
           max-width: 680px; margin: 0 auto;
           padding: 2rem 1.5rem 5rem;
         }
+        @keyframes water-shimmer {
+          0%, 100% { opacity: 0.3; }
+          50%       { opacity: 0.9; }
+        }
+        .water-shimmer { animation: water-shimmer 5s ease-in-out infinite; }
       `}</style>
 
       <div className={`${cormorant.className} pond-page`}>
@@ -197,8 +202,46 @@ export default async function TeaPartyPage() {
         {/* Fixed pond background */}
         <div className="pond-bg" aria-hidden>
           <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" className="pond-art">
-            {/* PLACEHOLDER — replaced in Task 2 */}
-            <rect width="1440" height="900" fill="#071a12" />
+            <defs>
+              {/* Water depth */}
+              <radialGradient id="wDeep" cx="50%" cy="48%" r="55%">
+                <stop offset="0%"   stopColor="#071a12" />
+                <stop offset="60%"  stopColor="#0a2a1a" />
+                <stop offset="100%" stopColor="#0d3520" />
+              </radialGradient>
+              {/* Edge darkening */}
+              <radialGradient id="wEdge" cx="50%" cy="50%" r="50%">
+                <stop offset="60%"  stopColor="#000000" stopOpacity="0" />
+                <stop offset="100%" stopColor="#020d08" stopOpacity="0.72" />
+              </radialGradient>
+              {/* Shimmer streak */}
+              <linearGradient id="wShimmer" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"   stopColor="#1a4a30" stopOpacity="0" />
+                <stop offset="50%"  stopColor="#1a4a30" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="#1a4a30" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+
+            {/* Base water */}
+            <rect width="1440" height="900" fill="url(#wDeep)" />
+            <rect width="1440" height="900" fill="url(#wEdge)" />
+
+            {/* Shimmer streaks */}
+            {[
+              { x: 180, y: 120, w: 420, h: 180, rot: -18, delay: "0s"   },
+              { x: 680, y: 280, w: 380, h: 140, rot:  12, delay: "2.1s" },
+              { x: 980, y: 160, w: 320, h: 160, rot:  -8, delay: "1.3s" },
+              { x: 320, y: 520, w: 440, h: 120, rot:  20, delay: "3.4s" },
+              { x: 800, y: 580, w: 360, h: 100, rot: -14, delay: "0.7s" },
+            ].map((s, i) => (
+              <ellipse key={i}
+                cx={s.x + s.w / 2} cy={s.y + s.h / 2}
+                rx={s.w / 2} ry={s.h / 2}
+                fill="url(#wShimmer)"
+                transform={`rotate(${s.rot}, ${s.x + s.w / 2}, ${s.y + s.h / 2})`}
+                className="water-shimmer"
+                style={{ animationDelay: s.delay }} />
+            ))}
           </svg>
         </div>
 
