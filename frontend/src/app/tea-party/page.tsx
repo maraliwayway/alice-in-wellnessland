@@ -192,6 +192,13 @@ function Lotus({ x, y, r }: { x: number; y: number; r: number }) {
   );
 }
 
+const rippleOrigins = [
+  { x: 480,  y: 340, delay: "0s"   },
+  { x: 1050, y: 520, delay: "1.8s" },
+  { x: 240,  y: 680, delay: "3.2s" },
+];
+const RIPPLE_COUNT = 4;
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function TeaPartyPage() {
@@ -243,6 +250,11 @@ export default async function TeaPartyPage() {
         .pad-rot-cw  { animation: pad-rot-cw  linear infinite; }
         .pad-rot-ccw { animation: pad-rot-ccw linear infinite; }
         .sparkle { animation: sparkle-twinkle 3.2s ease-in-out infinite; }
+        @keyframes ripple-expand {
+          0%   { r: 4;  opacity: 0.55; }
+          100% { r: 80; opacity: 0;    }
+        }
+        .ripple-ring { animation: ripple-expand 4s ease-out infinite; }
       `}</style>
 
       <div className={`${cormorant.className} pond-page`}>
@@ -295,6 +307,22 @@ export default async function TeaPartyPage() {
             {lotusOnPads.map((i) => (
               <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.42} />
             ))}
+            {rippleOrigins.map((origin, oi) =>
+              Array.from({ length: RIPPLE_COUNT }, (_, ri) => (
+                <circle key={`${oi}-${ri}`}
+                  cx={origin.x} cy={origin.y}
+                  r={4}
+                  fill="none"
+                  stroke="#4a9a78"
+                  strokeWidth="0.9"
+                  opacity="0.55"
+                  className="ripple-ring"
+                  style={{
+                    animationDelay: `calc(${origin.delay} + ${ri * 1.0}s)`,
+                    animationDuration: "4s",
+                  }} />
+              ))
+            )}
           </svg>
         </div>
 
