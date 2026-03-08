@@ -301,11 +301,6 @@ export default async function TeaPartyPage() {
                 style={{ animationDelay: s.delay }} />
             ))}
 
-            {lilyPads.map((lp, i) => <LilyPad key={i} {...lp} />)}
-            {lotusOnPads.map((i) => (
-              <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.42} />
-            ))}
-            {floatingFlowers.map((f, i) => <FloatingFlower key={i} {...f} />)}
             {rippleOrigins.map((origin, oi) =>
               Array.from({ length: RIPPLE_COUNT }, (_, ri) => (
                 <circle key={`${oi}-${ri}`}
@@ -321,6 +316,11 @@ export default async function TeaPartyPage() {
                   }} />
               ))
             )}
+            {lilyPads.map((lp, i) => <LilyPad key={i} {...lp} />)}
+            {lotusOnPads.map((i) => (
+              <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.42} />
+            ))}
+            {floatingFlowers.map((f, i) => <FloatingFlower key={i} {...f} />)}
 
             {/* Koi motion paths (hidden) */}
             <defs>
