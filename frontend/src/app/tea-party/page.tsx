@@ -133,14 +133,15 @@ function Tulip({ x, y }: { x: number; y: number }) {
 function Sparkle({ x, y, s, delay }: { x: number; y: number; s: number; delay: string }) {
   return (
     <g transform={`translate(${x},${y}) scale(${s})`}
-      style={{ animation: `sparkle-twinkle 3.2s ease-in-out ${delay} infinite` }}>
+      className="sparkle"
+      style={{ animationDelay: delay }}>
       <path d="M 0 -9 L 1.6 -1.6 L 9 0 L 1.6 1.6 L 0 9 L -1.6 1.6 L -9 0 L -1.6 -1.6 Z"
         fill="white" opacity="0.9" />
     </g>
   );
 }
 
-function LilyPad({ x, y, r, drift, rotAnim, dur, delay }: {
+function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay }: {
   x: number; y: number; r: number; rot: number;
   drift: string; rotAnim: string; dur: string; delay: string;
 }) {
@@ -153,7 +154,7 @@ function LilyPad({ x, y, r, drift, rotAnim, dur, delay }: {
   const d = `M ${x} ${y} L ${x1} ${y1} A ${r} ${r} 0 1 0 ${x2} ${y2} Z`;
   return (
     <g className={drift} style={{ animationDuration: dur, animationDelay: delay }}>
-      <g className={rotAnim} style={{ transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay }}>
+      <g transform={`rotate(${rot}, ${x}, ${y})`} className={rotAnim} style={{ transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay }}>
         <path d={d} fill="#2d6b3a" opacity="0.88" />
         <path d={d} fill="none" stroke="#5a9a5a" strokeWidth="0.9" opacity="0.45" />
         {[0, 60, 120, 180, 240, 300].map((a) => (
@@ -241,6 +242,7 @@ export default async function TeaPartyPage() {
         .pad-drift-c { animation: pad-drift-c ease-in-out infinite; }
         .pad-rot-cw  { animation: pad-rot-cw  linear infinite; }
         .pad-rot-ccw { animation: pad-rot-ccw linear infinite; }
+        .sparkle { animation: sparkle-twinkle 3.2s ease-in-out infinite; }
       `}</style>
 
       <div className={`${cormorant.className} pond-page`}>
