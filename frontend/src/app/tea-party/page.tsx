@@ -35,29 +35,24 @@ async function getEntries(): Promise<JournalEntryDoc[]> {
 }
 
 // Colours cycle through 3 green shades for variety
-const PAD_COLORS = ["#2a7a3a", "#3d8c48", "#5aaa5a", "#7ab840", "#1e6030"] as const;
+const PAD_COLORS = ["#4cc85a", "#60d468", "#78e080", "#8ae850", "#3ec048"] as const;
 
 const lilyPads: { x: number; y: number; r: number; rot: number; drift: string; rotAnim: string; dur: string; delay: string; fill: string }[] = [
-  { x: 210,  y: 580, r: 52, rot: 15,  drift: "pad-drift-a", rotAnim: "",           dur: "22s", delay: "0s",   fill: PAD_COLORS[0] },
-  { x: 295,  y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "28s", delay: "3s",   fill: PAD_COLORS[2] },
-  { x: 155,  y: 660, r: 30, rot: 5,   drift: "pad-drift-c", rotAnim: "",           dur: "35s", delay: "1.5s", fill: PAD_COLORS[4] },
-  { x: 890,  y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "",           dur: "24s", delay: "2s",   fill: PAD_COLORS[0] },
-  { x: 980,  y: 480, r: 44, rot: 25,  drift: "pad-drift-a", rotAnim: "pad-wobble-b", dur: "30s", delay: "0.8s", fill: PAD_COLORS[3] },
-  { x: 830,  y: 460, r: 28, rot: -5,  drift: "pad-drift-c", rotAnim: "",           dur: "40s", delay: "4s",   fill: PAD_COLORS[1] },
-  { x: 1180, y: 300, r: 48, rot: 20,  drift: "pad-drift-a", rotAnim: "pad-wobble-a", dur: "26s", delay: "1s",   fill: PAD_COLORS[0] },
-  { x: 540,  y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "",           dur: "32s", delay: "2.5s", fill: PAD_COLORS[2] },
-  // Extra pads for dense coverage
-  { x: 680,  y: 200, r: 42, rot: 35,  drift: "pad-drift-c", rotAnim: "",           dur: "29s", delay: "0.6s", fill: PAD_COLORS[3] },
-  { x: 780,  y: 250, r: 30, rot: -20, drift: "pad-drift-a", rotAnim: "",           dur: "36s", delay: "2.2s", fill: PAD_COLORS[1] },
-  { x: 430,  y: 350, r: 50, rot: 10,  drift: "pad-drift-b", rotAnim: "pad-wobble-b", dur: "23s", delay: "1.4s", fill: PAD_COLORS[0] },
-  { x: 500,  y: 400, r: 33, rot: -40, drift: "pad-drift-c", rotAnim: "",           dur: "38s", delay: "3.8s", fill: PAD_COLORS[4] },
-  { x: 1100, y: 650, r: 46, rot: 8,   drift: "pad-drift-a", rotAnim: "",           dur: "27s", delay: "0.3s", fill: PAD_COLORS[2] },
-  { x: 1230, y: 600, r: 35, rot: -25, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "31s", delay: "1.9s", fill: PAD_COLORS[3] },
-  { x: 350,  y: 180, r: 38, rot: 50,  drift: "pad-drift-c", rotAnim: "",           dur: "33s", delay: "4.5s", fill: PAD_COLORS[1] },
-  { x: 1050, y: 170, r: 44, rot: -15, drift: "pad-drift-a", rotAnim: "",           dur: "25s", delay: "2.8s", fill: PAD_COLORS[0] },
+  // Top-left corner
+  { x: 80,   y: 60,  r: 36, rot: 15,  drift: "pad-drift-a", rotAnim: "",             dur: "28s", delay: "0s",   fill: PAD_COLORS[0] },
+  // Top-right corner
+  { x: 1340, y: 90,  r: 40, rot: -20, drift: "pad-drift-b", rotAnim: "",             dur: "32s", delay: "2s",   fill: PAD_COLORS[1] },
+  // Bottom-left corner
+  { x: 100,  y: 800, r: 42, rot: 10,  drift: "pad-drift-c", rotAnim: "pad-wobble-a", dur: "30s", delay: "1s",   fill: PAD_COLORS[2] },
+  // Bottom-right corner
+  { x: 1300, y: 780, r: 34, rot: -30, drift: "pad-drift-a", rotAnim: "",             dur: "35s", delay: "3s",   fill: PAD_COLORS[3] },
+  // Left edge mid
+  { x: 60,   y: 420, r: 30, rot: 25,  drift: "pad-drift-b", rotAnim: "",             dur: "26s", delay: "1.5s", fill: PAD_COLORS[4] },
+  // Right edge mid
+  { x: 1380, y: 450, r: 38, rot: -15, drift: "pad-drift-c", rotAnim: "",             dur: "29s", delay: "2.5s", fill: PAD_COLORS[0] },
 ];
 
-const lotusOnPads = [0, 3, 6, 10, 13];
+const lotusOnPads = [1, 4];
 
 
 function FloatingFlower({ x, y, s, drift, dur, delay }: {
@@ -94,8 +89,8 @@ function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay, fill }: {
   return (
     <g className={drift} style={{ animationDuration: dur, animationDelay: delay }}>
       <g transform={`rotate(${rot}, ${x}, ${y})`} className={rotAnim || undefined} style={rotAnim ? { transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay } : undefined}>
-        <path d={d} fill={fill} opacity="0.90" />
-        <path d={d} fill="none" stroke="#a8d870" strokeWidth="0.8" opacity="0.35" />
+        <path d={d} fill={fill} opacity="0.45" />
+        <path d={d} fill="none" stroke="#a8d870" strokeWidth="0.8" opacity="0.15" />
       </g>
     </g>
   );
@@ -202,15 +197,27 @@ export default async function TeaPartyPage() {
     <>
       <style>{`
         .pond-page { min-height: 100vh; background: #1a5e30; position: relative; }
-        .pond-bg {
+        .pond-page-bg-img {
           position: fixed; inset: 0; z-index: 0;
+          width: 100vw; height: 100vh;
+          object-fit: cover; object-position: center;
+          pointer-events: none;
+          filter: brightness(0.55) saturate(0.6) contrast(0.9);
+          opacity: 0.85;
+        }
+        .pond-bg {
+          position: fixed; inset: 0; z-index: 1;
           overflow: hidden; pointer-events: none;
         }
         .pond-art { width: 100%; height: 100%; position: absolute; inset: 0; }
         .pond-content {
-          position: relative; z-index: 10;
-          max-width: 680px; margin: 0 auto;
-          padding: 2rem 1.5rem 5rem;
+          position: relative; z-index: 12;
+          max-width: 480px; margin: 0 auto;
+          padding: 2rem 1.5rem 2rem;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
         }
         @keyframes water-shimmer {
           0%, 100% { opacity: 0.3; }
@@ -269,7 +276,10 @@ export default async function TeaPartyPage() {
 
       <div className={`${cormorant.className} pond-page`}>
 
-        {/* Fixed pond background */}
+        {/* Background image */}
+        <img src="/journalbg.jpg" alt="" aria-hidden className="pond-page-bg-img" />
+
+        {/* Animated SVG overlay (fish, lily pads, etc.) */}
         <div className="pond-bg" aria-hidden>
           <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" className="pond-art">
             <defs>
@@ -292,9 +302,7 @@ export default async function TeaPartyPage() {
               </linearGradient>
             </defs>
 
-            {/* Base water */}
-            <rect width="1440" height="900" fill="url(#wDeep)" />
-            <rect width="1440" height="900" fill="url(#wEdge)" />
+            {/* Base water removed — journalbg.jpg shows through */}
 
             {/* Shimmer streaks */}
             {[
@@ -330,7 +338,7 @@ export default async function TeaPartyPage() {
             )}
             {lilyPads.map((lp, i) => <LilyPad key={i} {...lp} />)}
             {lotusOnPads.map((i) => (
-              <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.42} />
+              <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.35} />
             ))}
             {floatingFlowers.map((f, i) => <FloatingFlower key={i} {...f} />)}
 
@@ -365,68 +373,28 @@ export default async function TeaPartyPage() {
               </g>
             ))}
 
-            {/* Top veil */}
-            <rect width="1440" height="80" fill="#060d10" opacity="0.45" />
+            {/* Top veil removed — using journalbg.jpg */}
           </svg>
         </div>
 
         {/* Scrollable content */}
         <div className="pond-content">
 
-          {/* Nav */}
-          <nav className="flex items-center gap-3 mb-10">
-            <Link href="/wonderland"
-              className="text-[0.68rem] tracking-[0.22em] uppercase text-green-400/60 hover:text-green-300/90 transition-colors">
-              ← Wonderland
-            </Link>
-            <span className="text-green-900/40">◈</span>
-            <span className="text-[0.68rem] tracking-[0.22em] uppercase text-green-400/35">The Garden</span>
-          </nav>
-
-          {/* Header */}
-          <header className="mb-10 text-center">
-            <p className="text-[0.68rem] tracking-[0.32em] uppercase text-[#7acc80] mb-4">
-              mad hatter&apos;s tea party
-            </p>
-            <h1 className="text-[clamp(2.3rem,6vw,3.7rem)] font-light text-[#e8f0e0] leading-[1.08] mb-4">
-              The Enchanted<br />
-              <em className="font-semibold text-[#f0c830]">Garden Journal</em>
-            </h1>
-            <p className="text-[#7aaa7a] text-[1.05rem] font-light leading-relaxed max-w-[38ch] mx-auto">
-              Let your thoughts ripple outward.<br />
-              The Cheshire Cat is listening.
-            </p>
-          </header>
-
-          {/* Divider */}
-          <div className="flex items-center gap-4 mb-10">
-            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(80,180,80,0.32),transparent)]" />
-            <span className="text-lg">🍵</span>
-            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(80,180,80,0.32),transparent)]" />
-          </div>
-
           {/* Journal form card */}
-          <div className="rounded-3xl border border-[rgba(80,180,80,0.25)] p-6 md:p-8 bg-[rgba(6,28,12,0.62)] backdrop-blur-2xl">
+          <div className="rounded-2xl border border-[rgba(80,180,80,0.25)] p-4 md:p-6 bg-[rgba(6,28,12,0.62)] backdrop-blur-2xl">
             <JournalEntry userId="demo-user" />
           </div>
 
           {/* Past entries */}
-          <section className="mt-12">
-            <h2 className="text-xl font-light text-[#8acc88] mb-5">
-              Your Story So Far
-            </h2>
-            {entries.length === 0 ? (
-              <p className="text-center text-[#4a8a50] text-sm py-10">
-                Your story is just beginning... ☕
-              </p>
-            ) : (
+          {entries.length > 0 && (
+            <section className="mt-12">
               <div className="space-y-4">
                 {entries.map((entry) => (
                   <JournalCard key={entry._id} entry={entry} />
                 ))}
               </div>
-            )}
-          </section>
+            </section>
+          )}
 
         </div>
       </div>

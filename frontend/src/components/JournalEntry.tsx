@@ -96,30 +96,32 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
         </>
       ) : (
         <>
-          {/* ─── Mode toggle ─── */}
-          {!result && (
-            <div className="flex justify-center gap-1 my-5">
+          {/* ─── Pick mode: two big buttons ─── */}
+          {mode === "pick" && (
+            <div className="flex justify-center gap-6 my-8">
               <button
                 onClick={() => setMode("voice")}
-                title="Speak your mind"
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-all duration-200 border ${
-                  mode === "voice"
-                    ? "border-green-400/50 text-[#d0f0d0] bg-green-700/30"
-                    : "border-green-700/30 text-[#7acc88] hover:text-[#a8dca8] hover:border-green-600/40"
-                }`}
+                className="flex flex-col items-center gap-3 px-8 py-6 rounded-2xl border transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "rgba(6,28,12,0.55)",
+                  borderColor: "rgba(80,180,80,0.30)",
+                }}
               >
-                <span>🎙️</span> Voice
+                <span className="text-4xl">🎙️</span>
+                <span className="text-[#c8ecc0] text-sm font-medium tracking-wide">Voice</span>
+                <span className="text-[#5a9868] text-xs">Speak your mind</span>
               </button>
               <button
                 onClick={() => setMode("write")}
-                title="Write it out"
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-all duration-200 border ${
-                  mode === "write"
-                    ? "border-green-400/50 text-[#d0f0d0] bg-green-700/30"
-                    : "border-green-700/30 text-[#7acc88] hover:text-[#a8dca8] hover:border-green-600/40"
-                }`}
+                className="flex flex-col items-center gap-3 px-8 py-6 rounded-2xl border transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "rgba(6,28,12,0.55)",
+                  borderColor: "rgba(80,180,80,0.30)",
+                }}
               >
-                <span>✏️</span> Write
+                <span className="text-4xl">✏️</span>
+                <span className="text-[#c8ecc0] text-sm font-medium tracking-wide">Write</span>
+                <span className="text-[#5a9868] text-xs">Write it out</span>
               </button>
             </div>
           )}
@@ -128,24 +130,38 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
           {mode === "voice" && (
             <VoiceRecorder
               onTranscript={(text) => { setContent(text); setMode("write"); }}
-              onBack={() => setMode("write")}
+              onBack={() => setMode("pick")}
             />
           )}
 
           {/* ─── Write ─── */}
-          {(mode === "write" || mode === "pick") && (
-            <form onSubmit={handleSubmit}>
-
-              <div className="mb-4">
-                <p className="text-[#6ab870] text-sm mb-2">How are you feeling right now?</p>
-                <MoodRating value={moodRating} onChange={setMoodRating} />
+          {mode === "write" && (
+            <form onSubmit={handleSubmit} className="flex flex-col items-center gap-5">
+              {/* Back button — left-aligned full width */}
+              <div className="w-full">
+                <button
+                  type="button"
+                  onClick={() => setMode("pick")}
+                  className="text-[#5a9868] text-xs underline hover:text-[#7acc88] transition-colors"
+                >
+                  ← back
+                </button>
               </div>
 
+              {/* Mood rating — centered */}
+              <div className="w-full text-center">
+                <p className="text-[#6ab870] text-sm mb-3">How are you feeling right now?</p>
+                <div className="flex justify-center">
+                  <MoodRating value={moodRating} onChange={setMoodRating} />
+                </div>
+              </div>
+
+              {/* Textarea — full width */}
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write freely — this is just for you. What happened today? What are you confused about? What felt hard? There are no wrong answers."
-                className="w-full min-h-40 rounded-2xl border p-4 resize-none text-sm leading-relaxed focus:outline-none focus:ring-2 transition-colors"
+                className="w-full min-h-32 rounded-xl border p-4 resize-none text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-green-500/30 transition-colors"
                 style={{
                   background: "rgba(4,20,8,0.55)",
                   borderColor: "rgba(80,180,80,0.28)",
@@ -154,10 +170,11 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 }}
               />
 
+              {/* Submit button — centered */}
               <button
                 type="submit"
                 disabled={isSubmitting || content.trim().length < 10}
-                className="mt-4 rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 border"
+                className="rounded-full px-6 py-2.5 text-sm font-medium transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 border"
                 style={{
                   background: "rgba(18,80,25,0.60)",
                   borderColor: "rgba(80,200,80,0.40)",
