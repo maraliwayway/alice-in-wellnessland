@@ -44,14 +44,14 @@ const spirals = [
 ];
 
 const lilyPads = [
-  { x: 210, y: 580, r: 52, rot: 15,  drift: "pad-drift-a", rotAnim: "pad-rot-cw",  dur: "22s", delay: "0s"   },
-  { x: 295, y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-rot-ccw", dur: "28s", delay: "3s"   },
-  { x: 155, y: 660, r: 30, rot: 5,   drift: "pad-drift-c", rotAnim: "pad-rot-cw",  dur: "35s", delay: "1.5s" },
-  { x: 890, y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "pad-rot-ccw", dur: "24s", delay: "2s"   },
-  { x: 980, y: 480, r: 44, rot: 25,  drift: "pad-drift-a", rotAnim: "pad-rot-cw",  dur: "30s", delay: "0.8s" },
-  { x: 830, y: 460, r: 28, rot: -5,  drift: "pad-drift-c", rotAnim: "pad-rot-ccw", dur: "40s", delay: "4s"   },
-  { x: 1180, y: 300, r: 48, rot: 20, drift: "pad-drift-a", rotAnim: "pad-rot-cw",  dur: "26s", delay: "1s"   },
-  { x: 540,  y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "pad-rot-cw", dur: "32s", delay: "2.5s" },
+  { x: 210,  y: 580, r: 52, rot: 15,  drift: "pad-drift-a", rotAnim: "",            dur: "22s", delay: "0s"   },
+  { x: 295,  y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "28s", delay: "3s"   },
+  { x: 155,  y: 660, r: 30, rot: 5,   drift: "pad-drift-c", rotAnim: "",            dur: "35s", delay: "1.5s" },
+  { x: 890,  y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "",            dur: "24s", delay: "2s"   },
+  { x: 980,  y: 480, r: 44, rot: 25,  drift: "pad-drift-a", rotAnim: "pad-wobble-b", dur: "30s", delay: "0.8s" },
+  { x: 830,  y: 460, r: 28, rot: -5,  drift: "pad-drift-c", rotAnim: "",            dur: "40s", delay: "4s"   },
+  { x: 1180, y: 300, r: 48, rot: 20,  drift: "pad-drift-a", rotAnim: "pad-wobble-a", dur: "26s", delay: "1s"   },
+  { x: 540,  y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "",            dur: "32s", delay: "2.5s" },
 ];
 
 const lotusOnPads = [0, 3, 6];
@@ -154,7 +154,7 @@ function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay }: {
   const d = `M ${x} ${y} L ${x1} ${y1} A ${r} ${r} 0 1 0 ${x2} ${y2} Z`;
   return (
     <g className={drift} style={{ animationDuration: dur, animationDelay: delay }}>
-      <g transform={`rotate(${rot}, ${x}, ${y})`} className={rotAnim} style={{ transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay }}>
+      <g transform={`rotate(${rot}, ${x}, ${y})`} className={rotAnim || undefined} style={rotAnim ? { transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay } : undefined}>
         <path d={d} fill="#2d6b3a" opacity="0.88" />
         <path d={d} fill="none" stroke="#5a9a5a" strokeWidth="0.9" opacity="0.45" />
         {[0, 60, 120, 180, 240, 300].map((a) => (
@@ -294,13 +294,25 @@ export default async function TeaPartyPage() {
           60%  { transform: translate(-6px, -4px); }
           100% { transform: translate(0px,  0px); }
         }
-        @keyframes pad-rot-cw  { from { transform: rotate(0deg);   } to { transform: rotate(360deg);  } }
-        @keyframes pad-rot-ccw { from { transform: rotate(0deg);   } to { transform: rotate(-360deg); } }
-        .pad-drift-a { animation: pad-drift-a ease-in-out infinite; }
-        .pad-drift-b { animation: pad-drift-b ease-in-out infinite; }
-        .pad-drift-c { animation: pad-drift-c ease-in-out infinite; }
-        .pad-rot-cw  { animation: pad-rot-cw  linear infinite; }
-        .pad-rot-ccw { animation: pad-rot-ccw linear infinite; }
+        @keyframes pad-wobble-a {
+          0%   { transform: rotate(0deg);   }
+          20%  { transform: rotate(8deg);   }
+          50%  { transform: rotate(-5deg);  }
+          80%  { transform: rotate(10deg);  }
+          100% { transform: rotate(0deg);   }
+        }
+        @keyframes pad-wobble-b {
+          0%   { transform: rotate(0deg);   }
+          30%  { transform: rotate(-10deg); }
+          60%  { transform: rotate(6deg);   }
+          85%  { transform: rotate(-4deg);  }
+          100% { transform: rotate(0deg);   }
+        }
+        .pad-drift-a  { animation: pad-drift-a  ease-in-out infinite; }
+        .pad-drift-b  { animation: pad-drift-b  ease-in-out infinite; }
+        .pad-drift-c  { animation: pad-drift-c  ease-in-out infinite; }
+        .pad-wobble-a { animation: pad-wobble-a ease-in-out infinite; }
+        .pad-wobble-b { animation: pad-wobble-b ease-in-out infinite; }
         .sparkle { animation: sparkle-twinkle 3.2s ease-in-out infinite; }
         @keyframes ripple-expand {
           0%   { r: 4;  opacity: 0.55; }
