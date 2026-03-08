@@ -67,29 +67,29 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
       {/* ─── Result card ─── */}
       {result ? (
         <>
-          <div className="rounded-2xl p-5 mt-4 border border-teal-400/25"
-            style={{ background: "rgba(8,60,75,0.55)" }}>
-            <p className="text-[#7ad8a8] font-medium text-xs uppercase tracking-wide mb-3">
+          <div className="rounded-2xl p-5 mt-4 border border-green-500/25"
+            style={{ background: "rgba(6,28,12,0.62)" }}>
+            <p className="text-[#7acc70] font-medium text-xs uppercase tracking-wide mb-3">
               The Cheshire Cat hears you 🐱
             </p>
             <div>
-              <p className="text-[#3a7868] text-xs">You&apos;re feeling</p>
+              <p className="text-[#4a9858] text-xs">You&apos;re feeling</p>
               <p className="text-[#c8ddd5] text-sm leading-relaxed mt-0.5">{result.validation}</p>
             </div>
             {result.clarity && (
               <div className="mt-3">
-                <p className="text-[#3a7868] text-xs">A thought to consider</p>
+                <p className="text-[#4a9858] text-xs">A thought to consider</p>
                 <p className="text-[#c8ddd5] text-sm leading-relaxed mt-0.5">{result.clarity}</p>
               </div>
             )}
             <div className="mt-3">
-              <p className="text-[#3a7868] text-xs">Remember</p>
+              <p className="text-[#4a9858] text-xs">Remember</p>
               <p className="italic text-[#e8a0bf] text-sm mt-0.5">{result.affirmation}</p>
             </div>
           </div>
           <button
             onClick={handleReset}
-            className="text-[#3a7868] text-xs mt-4 underline hover:text-[#5a9888] transition-colors"
+            className="text-[#4a9858] text-xs mt-4 underline hover:text-[#6ab870] transition-colors"
           >
             Write another entry
           </button>
@@ -104,8 +104,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 title="Speak your mind"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-all duration-200 border ${
                   mode === "voice"
-                    ? "border-teal-400/50 text-[#d0f0e8] bg-teal-700/30"
-                    : "border-teal-600/30 text-[#7ac8b8] hover:text-[#a8dcc8] hover:border-teal-500/40"
+                    ? "border-green-400/50 text-[#d0f0d0] bg-green-700/30"
+                    : "border-green-700/30 text-[#7acc88] hover:text-[#a8dca8] hover:border-green-600/40"
                 }`}
               >
                 <span>🎙️</span> Voice
@@ -115,8 +115,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 title="Write it out"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-all duration-200 border ${
                   mode === "write"
-                    ? "border-teal-400/50 text-[#d0f0e8] bg-teal-700/30"
-                    : "border-teal-600/30 text-[#7ac8b8] hover:text-[#a8dcc8] hover:border-teal-500/40"
+                    ? "border-green-400/50 text-[#d0f0d0] bg-green-700/30"
+                    : "border-green-700/30 text-[#7acc88] hover:text-[#a8dca8] hover:border-green-600/40"
                 }`}
               >
                 <span>✏️</span> Write
@@ -137,7 +137,7 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
             <form onSubmit={handleSubmit}>
 
               <div className="mb-4">
-                <p className="text-[#5a9888] text-sm mb-2">How are you feeling right now?</p>
+                <p className="text-[#6ab870] text-sm mb-2">How are you feeling right now?</p>
                 <MoodRating value={moodRating} onChange={setMoodRating} />
               </div>
 
@@ -147,10 +147,10 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 placeholder="Write freely — this is just for you. What happened today? What are you confused about? What felt hard? There are no wrong answers."
                 className="w-full min-h-40 rounded-2xl border p-4 resize-none text-sm leading-relaxed focus:outline-none focus:ring-2 transition-colors"
                 style={{
-                  background: "rgba(5,40,55,0.5)",
-                  borderColor: "rgba(100,200,180,0.25)",
-                  color: "#dde8e0",
-                  caretColor: "#7ad8a8",
+                  background: "rgba(4,20,8,0.55)",
+                  borderColor: "rgba(80,180,80,0.28)",
+                  color: "#dde8d8",
+                  caretColor: "#7acc70",
                 }}
               />
 
@@ -159,9 +159,9 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 disabled={isSubmitting || content.trim().length < 10}
                 className="mt-4 rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 border"
                 style={{
-                  background: "rgba(20,100,110,0.55)",
-                  borderColor: "rgba(100,200,180,0.4)",
-                  color: "#c8ece0",
+                  background: "rgba(18,80,25,0.60)",
+                  borderColor: "rgba(80,200,80,0.40)",
+                  color: "#c8ecc0",
                 }}
               >
                 {isSubmitting ? (
