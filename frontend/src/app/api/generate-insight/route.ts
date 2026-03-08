@@ -156,23 +156,13 @@ export async function GET() {
             character
         };
 
-        console.log("Insight summary sent to Gemini:", summary);
-        const prompt = `You are generating a supportive reflection for a wellness journaling app themed around Alice in Wonderland.
+        const prompt = `You are generating a supportive wellness reflection for a journaling app themed around Alice in Wonderland. 
 
-Write a short personalized insight based on the user's recent journal patterns.
+Write 2–3 sentences describing the user's recent emotional patterns based on the journaling data below. 
 
-Structure your response like this:
+If a positive habit correlation exists (like topHabit), suggest that specific activity as a small thing that might support their wellbeing. State this correlation naturally, as a warm observation backed by their journal entries (e.g., "I notice your mood tends to lift when you..."). Do not use clinical or robotic words like "data" or "correlation". If no habit is found, suggest a general small activity.
 
-1. Write 2- 3 sentences describing the user's recent emotional patterns.
-
-2. If a positive habit correlation exists, suggest that activity in a whimsical way.
-   Explain that the user's mood tends to improve when they do that activity.
-
-3. If a second positive habit exists, briefly mention it as another supportive activity.
-
-4. End with a Wonderland character one-sentence whimsy reflection explaining why the user resembles that character.
-
-Keep the tone warm, reflective, and slightly whimsical, like guidance from Wonderland.
+Finally, include a Wonderland character reflection with a one-sentence description of why the user resembles their assigned character.
 
 Data:
 ${JSON.stringify(summary, null, 2)}`;
