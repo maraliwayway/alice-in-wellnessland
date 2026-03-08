@@ -67,8 +67,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
       {/* ─── Result card ─── */}
       {result ? (
         <>
-          <div className="rounded-2xl p-5 mt-4 border border-teal-700/35"
-            style={{ background: "rgba(6,24,20,0.65)" }}>
+          <div className="rounded-2xl p-5 mt-4 border border-teal-400/25"
+            style={{ background: "rgba(8,60,75,0.55)" }}>
             <p className="text-[#7ad8a8] font-medium text-xs uppercase tracking-wide mb-3">
               The Cheshire Cat hears you 🐱
             </p>
@@ -104,8 +104,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 title="Speak your mind"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-all duration-200 border ${
                   mode === "voice"
-                    ? "border-teal-500/60 text-[#a8dcc8] bg-teal-900/40"
-                    : "border-teal-900/40 text-[#3a7868] hover:text-[#6aaa90] hover:border-teal-700/50"
+                    ? "border-teal-400/50 text-[#d0f0e8] bg-teal-700/30"
+                    : "border-teal-600/30 text-[#7ac8b8] hover:text-[#a8dcc8] hover:border-teal-500/40"
                 }`}
               >
                 <span>🎙️</span> Voice
@@ -115,8 +115,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 title="Write it out"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-all duration-200 border ${
                   mode === "write"
-                    ? "border-teal-500/60 text-[#a8dcc8] bg-teal-900/40"
-                    : "border-teal-900/40 text-[#3a7868] hover:text-[#6aaa90] hover:border-teal-700/50"
+                    ? "border-teal-400/50 text-[#d0f0e8] bg-teal-700/30"
+                    : "border-teal-600/30 text-[#7ac8b8] hover:text-[#a8dcc8] hover:border-teal-500/40"
                 }`}
               >
                 <span>✏️</span> Write
@@ -147,8 +147,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 placeholder="Write freely — this is just for you. What happened today? What are you confused about? What felt hard? There are no wrong answers."
                 className="w-full min-h-40 rounded-2xl border p-4 resize-none text-sm leading-relaxed focus:outline-none focus:ring-2 transition-colors"
                 style={{
-                  background: "rgba(6,18,28,0.6)",
-                  borderColor: "rgba(74,152,128,0.3)",
+                  background: "rgba(5,40,55,0.5)",
+                  borderColor: "rgba(100,200,180,0.25)",
                   color: "#dde8e0",
                   caretColor: "#7ad8a8",
                 }}
@@ -159,8 +159,8 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
                 disabled={isSubmitting || content.trim().length < 10}
                 className="mt-4 rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 border"
                 style={{
-                  background: "rgba(58,130,100,0.55)",
-                  borderColor: "rgba(80,160,120,0.4)",
+                  background: "rgba(20,100,110,0.55)",
+                  borderColor: "rgba(100,200,180,0.4)",
                   color: "#c8ece0",
                 }}
               >
