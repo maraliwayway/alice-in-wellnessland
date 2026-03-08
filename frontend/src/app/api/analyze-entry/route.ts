@@ -15,6 +15,7 @@ export async function POST(request: Request) {
 
 Extract structured wellness information from the journal entry.
 
+Return ONLY raw JSON. Do not include markdown formatting, backticks, or any other text.
 Return ONLY valid JSON with this schema:
 
 {
@@ -39,14 +40,31 @@ ${entry}`;
 
         let result;
         try {
-            const text = response.text;
+            let text = response.text || '';
+            // Safely extract JSON in case Gemini returns markdown tags
+            const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+            if (jsonMatch) {
+                text = jsonMatch[1];
+            } else {
+                text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+            }
             result = text ? JSON.parse(text) : null;
         } catch (parseError) {
             console.error('Error parsing Gemini JSON response:', parseError);
-            return NextResponse.json({ error: 'Failed to parsing structured data' }, { status: 500 });
+            return NextResponse.json({ error: 'Failed to parse Gemini response' }, { status: 500 });
         }
 
-        return NextResponse.json(result);
+        return NextResponse.json({
+            success: true,
+            data: {
+                mood_score: result?.mood_score ?? null,
+                activities: result?.activities ?? [],
+                emotions: result?.emotions ?? [],
+                stressors: result?.stressors ?? [],
+                social_interactions: result?.social_interactions ?? [],
+                health_behaviors: result?.health_behaviors ?? []
+            }
+        });
     } catch (error) {
         console.error('Gemini Analysis Error:', error);
         return NextResponse.json(
