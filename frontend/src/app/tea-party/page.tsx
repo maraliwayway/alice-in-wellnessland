@@ -44,18 +44,17 @@ const spirals = [
 ];
 
 const lilyPads = [
-  { x: 205, y: 315, r: 41 }, { x: 272, y: 344, r: 32 },
-  { x: 158, y: 352, r: 26 }, { x: 308, y: 300, r: 20 },
-  { x: 922, y: 506, r: 46 }, { x: 995, y: 460, r: 36 },
-  { x: 1026, y: 524, r: 28 }, { x: 882, y: 484, r: 22 },
-  { x: 1203, y: 224, r: 38 }, { x: 1268, y: 212, r: 28 }, { x: 1252, y: 246, r: 20 },
+  { x: 210, y: 580, r: 52, rot: 15,  drift: "pad-drift-a", rotAnim: "pad-rot-cw",  dur: "22s", delay: "0s"   },
+  { x: 295, y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-rot-ccw", dur: "28s", delay: "3s"   },
+  { x: 155, y: 660, r: 30, rot: 5,   drift: "pad-drift-c", rotAnim: "pad-rot-cw",  dur: "35s", delay: "1.5s" },
+  { x: 890, y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "pad-rot-ccw", dur: "24s", delay: "2s"   },
+  { x: 980, y: 480, r: 44, rot: 25,  drift: "pad-drift-a", rotAnim: "pad-rot-cw",  dur: "30s", delay: "0.8s" },
+  { x: 830, y: 460, r: 28, rot: -5,  drift: "pad-drift-c", rotAnim: "pad-rot-ccw", dur: "40s", delay: "4s"   },
+  { x: 1180, y: 300, r: 48, rot: 20, drift: "pad-drift-a", rotAnim: "pad-rot-cw",  dur: "26s", delay: "1s"   },
+  { x: 540,  y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "pad-rot-cw", dur: "32s", delay: "2.5s" },
 ];
 
-const lotuses = [
-  { x: 206, y: 293, r: 15 },
-  { x: 943, y: 478, r: 18 },
-  { x: 1218, y: 205, r: 13 },
-];
+const lotusOnPads = [0, 3, 6];
 
 const daisies = [
   { x:  52, y: 840, s: 1.5,  r:  15, delay: "0s"    },
@@ -119,36 +118,6 @@ function Daisy({ x, y, s, r }: { x: number; y: number; s: number; r: number }) {
   );
 }
 
-function LilyPad({ x, y, r }: { x: number; y: number; r: number }) {
-  const a1 = -Math.PI / 2 + Math.PI / 5.5;
-  const a2 = -Math.PI / 2 - Math.PI / 5.5;
-  const x1 = (x + r * Math.cos(a1)).toFixed(2);
-  const y1 = (y + r * Math.sin(a1)).toFixed(2);
-  const x2 = (x + r * Math.cos(a2)).toFixed(2);
-  const y2 = (y + r * Math.sin(a2)).toFixed(2);
-  const d = `M ${x} ${y} L ${x1} ${y1} A ${r} ${r} 0 1 0 ${x2} ${y2} Z`;
-  return (
-    <g>
-      <path d={d} fill="#4a7a3a" opacity="0.78" />
-      <path d={d} fill="none" stroke="#7ab060" strokeWidth="0.8" opacity="0.45" />
-      <line x1={x} y1={y} x2={x} y2={y - r * 0.88}
-        stroke="#6a9a4a" strokeWidth="0.6" opacity="0.4" />
-    </g>
-  );
-}
-
-function Lotus({ x, y, r }: { x: number; y: number; r: number }) {
-  return (
-    <g transform={`translate(${x},${y})`}>
-      {[0, 60, 120, 180, 240, 300].map((a) => (
-        <ellipse key={a} cx="0" cy={-(r * 1.1)} rx={r * 0.45} ry={r * 0.95}
-          fill="#e8a0bf" opacity="0.88" transform={`rotate(${a})`} />
-      ))}
-      <circle cx="0" cy="0" r={r * 0.38} fill="#f5d0e0" opacity="0.9" />
-    </g>
-  );
-}
-
 function Tulip({ x, y }: { x: number; y: number }) {
   return (
     <g transform={`translate(${x},${y})`}>
@@ -167,6 +136,57 @@ function Sparkle({ x, y, s, delay }: { x: number; y: number; s: number; delay: s
       style={{ animation: `sparkle-twinkle 3.2s ease-in-out ${delay} infinite` }}>
       <path d="M 0 -9 L 1.6 -1.6 L 9 0 L 1.6 1.6 L 0 9 L -1.6 1.6 L -9 0 L -1.6 -1.6 Z"
         fill="white" opacity="0.9" />
+    </g>
+  );
+}
+
+function LilyPad({ x, y, r, drift, rotAnim, dur, delay }: {
+  x: number; y: number; r: number; rot: number;
+  drift: string; rotAnim: string; dur: string; delay: string;
+}) {
+  const a1 = -Math.PI / 2 + Math.PI / 5;
+  const a2 = -Math.PI / 2 - Math.PI / 5;
+  const x1 = (x + r * Math.cos(a1)).toFixed(2);
+  const y1 = (y + r * Math.sin(a1)).toFixed(2);
+  const x2 = (x + r * Math.cos(a2)).toFixed(2);
+  const y2 = (y + r * Math.sin(a2)).toFixed(2);
+  const d = `M ${x} ${y} L ${x1} ${y1} A ${r} ${r} 0 1 0 ${x2} ${y2} Z`;
+  return (
+    <g className={drift} style={{ animationDuration: dur, animationDelay: delay }}>
+      <g className={rotAnim} style={{ transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay }}>
+        <path d={d} fill="#2d6b3a" opacity="0.88" />
+        <path d={d} fill="none" stroke="#5a9a5a" strokeWidth="0.9" opacity="0.45" />
+        {[0, 60, 120, 180, 240, 300].map((a) => (
+          <line key={a}
+            x1={x} y1={y}
+            x2={x + r * 0.9 * Math.cos((a - 90) * Math.PI / 180)}
+            y2={y + r * 0.9 * Math.sin((a - 90) * Math.PI / 180)}
+            stroke="#5a9a5a" strokeWidth="0.6" opacity="0.3" />
+        ))}
+      </g>
+    </g>
+  );
+}
+
+function Lotus({ x, y, r }: { x: number; y: number; r: number }) {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      {[0, 51.4, 102.8, 154.2, 205.7, 257.1, 308.5].map((a) => (
+        <ellipse key={a}
+          cx={0} cy={-(r * 1.15)}
+          rx={r * 0.38} ry={r * 0.88}
+          fill="#e890b0" opacity="0.82"
+          transform={`rotate(${a})`} />
+      ))}
+      {[25.7, 77.1, 128.5, 180, 231.4, 282.8, 334.2].map((a) => (
+        <ellipse key={a}
+          cx={0} cy={-(r * 0.85)}
+          rx={r * 0.28} ry={r * 0.65}
+          fill="#f0b8cc" opacity="0.9"
+          transform={`rotate(${a})`} />
+      ))}
+      <circle cx={0} cy={0} r={r * 0.3} fill="#f5d0e0" opacity="0.95" />
+      <circle cx={0} cy={0} r={r * 0.15} fill="#f8e8f0" opacity="1" />
     </g>
   );
 }
@@ -195,6 +215,32 @@ export default async function TeaPartyPage() {
           50%       { opacity: 0.9; }
         }
         .water-shimmer { animation: water-shimmer 5s ease-in-out infinite; }
+        @keyframes pad-drift-a {
+          0%   { transform: translate(0px,  0px); }
+          25%  { transform: translate(6px,  -4px); }
+          50%  { transform: translate(10px,  2px); }
+          75%  { transform: translate(4px,   6px); }
+          100% { transform: translate(0px,  0px); }
+        }
+        @keyframes pad-drift-b {
+          0%   { transform: translate(0px,  0px); }
+          33%  { transform: translate(-8px,  5px); }
+          66%  { transform: translate(4px,  -6px); }
+          100% { transform: translate(0px,  0px); }
+        }
+        @keyframes pad-drift-c {
+          0%   { transform: translate(0px,  0px); }
+          20%  { transform: translate(5px,   3px); }
+          60%  { transform: translate(-6px, -4px); }
+          100% { transform: translate(0px,  0px); }
+        }
+        @keyframes pad-rot-cw  { from { transform: rotate(0deg);   } to { transform: rotate(360deg);  } }
+        @keyframes pad-rot-ccw { from { transform: rotate(0deg);   } to { transform: rotate(-360deg); } }
+        .pad-drift-a { animation: pad-drift-a ease-in-out infinite; }
+        .pad-drift-b { animation: pad-drift-b ease-in-out infinite; }
+        .pad-drift-c { animation: pad-drift-c ease-in-out infinite; }
+        .pad-rot-cw  { animation: pad-rot-cw  linear infinite; }
+        .pad-rot-ccw { animation: pad-rot-ccw linear infinite; }
       `}</style>
 
       <div className={`${cormorant.className} pond-page`}>
@@ -241,6 +287,11 @@ export default async function TeaPartyPage() {
                 transform={`rotate(${s.rot}, ${s.x + s.w / 2}, ${s.y + s.h / 2})`}
                 className="water-shimmer"
                 style={{ animationDelay: s.delay }} />
+            ))}
+
+            {lilyPads.map((lp, i) => <LilyPad key={i} {...lp} />)}
+            {lotusOnPads.map((i) => (
+              <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.42} />
             ))}
           </svg>
         </div>
