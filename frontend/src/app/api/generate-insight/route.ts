@@ -101,3 +101,16 @@ ${JSON.stringify(summary, null, 2)}`;
         return NextResponse.json({ error: 'Failed to generate insight.' }, { status: 500 });
     }
 }
+// export async function GET() {
+//   return Response.json({
+//     insight_text:
+//       "Recently your journal suggests you've been feeling a bit overwhelmed and uncertain, especially around work. Starting something new often comes with a steep learning curve, and it's normal to feel this way early on. Taking a short walk or stepping away briefly might help reset your mental energy.",
+//     character: "White Rabbit",
+//     stats: {
+//       avgMood: 3.4,
+//       stressCount: 6,
+//       healthCount: 1,
+//       socialCount: 2
+//     }
+//   })
+// }
