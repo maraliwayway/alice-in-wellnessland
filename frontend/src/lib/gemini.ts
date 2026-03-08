@@ -2,7 +2,10 @@ import { GoogleGenAI } from "@google/genai";
 
 // GoogleGenAI automatically reads GEMINI_API_KEY from process.env.
 // No need to pass the key explicitly — just set it in .env.local.
-const ai = new GoogleGenAI({});
+
+export const ai = new GoogleGenAI({});
+
+
 
 const MODEL = "gemini-3-flash-preview";
 
