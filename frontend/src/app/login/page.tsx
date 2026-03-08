@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { IM_Fell_English } from "next/font/google";
+import PassageAuth from "@/components/PassageAuth";
 
 const imFell = IM_Fell_English({
   subsets: ["latin"],
@@ -26,6 +27,46 @@ const glyphs = ["✦", "❧", "✿", "✦", "❋", "❧", "✿", "✦"];
 export default function LoginPage() {
   return (
     <main className={`${imFell.variable} login-root`} style={{ fontFamily: "var(--font-im-fell), 'IM Fell English', serif" }}>
+      {/* Force-strip Clerk's white card — bypasses Tailwind processing */}
+      <style>{`
+        .login-card .cl-rootBox,
+        .login-card .cl-card,
+        .login-card .cl-cardBox,
+        .login-card .cl-main { background: transparent !important; box-shadow: none !important; border: none !important; width: 100% !important; }
+        .login-card .cl-header { display: none !important; }
+        .login-card .cl-footer { background: transparent !important; border-top: 1px solid rgba(162,190,52,0.15) !important; margin-top: 0.5rem !important; }
+        .login-card .cl-footerAction { color: rgba(162,190,52,0.6) !important; }
+        .login-card .cl-footerActionLink { color: #a8c23a !important; font-weight: 600 !important; }
+        .login-card .cl-socialButtonsBlockButton {
+          border-radius: 2px !important; border: 1px solid rgba(162,190,52,0.3) !important;
+          background: rgba(255,255,255,0.06) !important; color: #d4cfa8 !important;
+        }
+        .login-card .cl-socialButtonsBlockButtonText { color: #d4cfa8 !important; }
+        .login-card .cl-dividerLine { background: rgba(162,190,52,0.2) !important; }
+        .login-card .cl-dividerText { color: rgba(162,190,52,0.5) !important; font-size: 0.75rem !important; }
+        .login-card .cl-formFieldLabel { color: #9a9278 !important; font-size: 0.78rem !important; letter-spacing: 0.05em !important; }
+        .login-card .cl-formFieldInput {
+          border-radius: 2px !important;
+          background: rgba(10,14,10,0.65) !important;
+          border: 1px solid rgba(162,190,52,0.28) !important;
+          color: #f0ebe0 !important;
+        }
+        .login-card .cl-formFieldInput:focus {
+          border-color: rgba(162,190,52,0.65) !important;
+          box-shadow: 0 0 0 2px rgba(162,190,52,0.14) !important;
+          outline: none !important;
+        }
+        .login-card .cl-formButtonPrimary {
+          border-radius: 2px !important;
+          background: linear-gradient(135deg, #5a7a1a, #7ea82a) !important;
+          box-shadow: 0 0 20px rgba(108,140,28,0.4) !important;
+          color: #f5f0e0 !important; font-weight: 600 !important;
+        }
+        .login-card .cl-formButtonPrimary:hover { opacity: 0.88 !important; }
+        .login-card .cl-identityPreviewText { color: #d4cfa8 !important; }
+        .login-card .cl-identityPreviewEditButton { color: #a8c23a !important; }
+      `}</style>
+
       {/* ── Full-bleed keyhole background ──────────────────── */}
       <div className="login-bg" aria-hidden>
         <Image
@@ -74,6 +115,8 @@ export default function LoginPage() {
         <p className="login-subtitle">Step through the keyhole.</p>
 
         <div className="login-divider" />
+
+        <PassageAuth />
       </div>
     </main>
   );
