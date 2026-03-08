@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface Goal {
   id: string;
@@ -15,6 +15,24 @@ interface Goal {
 interface Message {
   role: "user" | "assistant";
   content: string;
+}
+
+// Renders inline markdown: **bold**, *italic*, ***bold-italic***
+function renderInline(text: string): React.ReactNode {
+  const parts: React.ReactNode[] = [];
+  const regex = /(\*\*\*(.+?)\*\*\*|\*\*(.+?)\*\*|\*(.+?)\*)/g;
+  let last = 0;
+  let match;
+  let key = 0;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > last) parts.push(text.slice(last, match.index));
+    if (match[2]) parts.push(<strong key={key++}><em>{match[2]}</em></strong>);
+    else if (match[3]) parts.push(<strong key={key++}>{match[3]}</strong>);
+    else if (match[4]) parts.push(<em key={key++}>{match[4]}</em>);
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : <>{...parts}</>;
 }
 
 export default function GoalsPage() {
@@ -163,11 +181,11 @@ export default function GoalsPage() {
     const goalsContext =
       goals.length > 0
         ? `Here are the user's current goals:\n\n${goals
-            .map(
-              (g, i) =>
-                `Goal ${i + 1}: ${g.overview}\nStrategies: ${g.strategies}\nAcceptance Criteria: ${g.acceptanceCriteria.join("; ")}\nProgress: ${g.checkedCriteria.filter(Boolean).length}/${g.checkedCriteria.length} criteria met\nStatus: ${g.completed ? "Completed" : "In Progress"}`
-            )
-            .join("\n\n")}`
+          .map(
+            (g, i) =>
+              `Goal ${i + 1}: ${g.overview}\nStrategies: ${g.strategies}\nAcceptance Criteria: ${g.acceptanceCriteria.join("; ")}\nProgress: ${g.checkedCriteria.filter(Boolean).length}/${g.checkedCriteria.length} criteria met\nStatus: ${g.completed ? "Completed" : "In Progress"}`
+          )
+          .join("\n\n")}`
         : "The user has no goals set yet.";
 
     const userMsg: Message = { role: "user", content: chatInput };
@@ -218,22 +236,24 @@ export default function GoalsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Goal Setting</h1>
           <p className="text-sm text-gray-500 mt-0.5">Track your SMART goals and progress</p>
         </div>
-        {view !== "form" && (
-          <button
-            onClick={() => { resetForm(); setView("form"); }}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-          >
-            + New Goal
-          </button>
-        )}
-        {view !== "list" && (
-          <button
-            onClick={() => setView("list")}
-            className="text-sm text-gray-500 hover:text-gray-700 ml-3"
-          >
-            ← Back
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {view === "list" && (
+            <button
+              onClick={() => { resetForm(); setView("form"); }}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              + New Goal
+            </button>
+          )}
+          {view !== "list" && (
+            <button
+              onClick={() => setView("list")}
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              ← Back
+            </button>
+          )}
+        </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-8">
@@ -364,13 +384,12 @@ export default function GoalsPage() {
                 <div
                   className="bg-blue-500 h-2 rounded-full transition-all"
                   style={{
-                    width: `${
-                      selectedGoal.checkedCriteria.length > 0
+                    width: `${selectedGoal.checkedCriteria.length > 0
                         ? (selectedGoal.checkedCriteria.filter(Boolean).length /
-                            selectedGoal.checkedCriteria.length) *
-                          100
+                          selectedGoal.checkedCriteria.length) *
+                        100
                         : 0
-                    }%`,
+                      }%`,
                   }}
                 />
               </div>
@@ -388,11 +407,10 @@ export default function GoalsPage() {
                       className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
                     <span
-                      className={`text-sm transition-colors ${
-                        selectedGoal.checkedCriteria[idx]
+                      className={`text-sm transition-colors ${selectedGoal.checkedCriteria[idx]
                           ? "line-through text-gray-400"
                           : "text-gray-700"
-                      }`}
+                        }`}
                     >
                       {criterion}
                     </span>
@@ -427,10 +445,10 @@ export default function GoalsPage() {
                     const progress =
                       goal.checkedCriteria.length > 0
                         ? Math.round(
-                            (goal.checkedCriteria.filter(Boolean).length /
-                              goal.checkedCriteria.length) *
-                              100
-                          )
+                          (goal.checkedCriteria.filter(Boolean).length /
+                            goal.checkedCriteria.length) *
+                          100
+                        )
                         : 0;
                     return (
                       <div
@@ -574,13 +592,29 @@ export default function GoalsPage() {
             {chatMessages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[85%] rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
-                    msg.role === "user"
+                  className={`max-w-[85%] rounded-xl px-3 py-2 text-sm leading-relaxed ${msg.role === "user"
                       ? "bg-blue-600 text-white rounded-br-sm"
                       : "bg-gray-100 text-gray-800 rounded-bl-sm"
-                  }`}
+                    }`}
                 >
-                  {msg.content}
+                  {msg.role === "user" ? (
+                    <span className="whitespace-pre-wrap">{msg.content}</span>
+                  ) : (
+                    <div className="space-y-1">
+                      {msg.content.split("\n").map((line, li) => {
+                        if (!line.trim()) return <div key={li} className="h-1" />;
+                        if (line.startsWith("### ")) return <p key={li} className="font-semibold text-gray-900 mt-2">{renderInline(line.slice(4))}</p>;
+                        if (line.startsWith("## ")) return <p key={li} className="font-bold text-gray-900 mt-2">{renderInline(line.slice(3))}</p>;
+                        if (line.match(/^\s*[\*\-]\s+/)) return (
+                          <div key={li} className="flex gap-2 items-start">
+                            <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-gray-400 inline-block" />
+                            <span>{renderInline(line.replace(/^\s*[\*\-]\s+/, ""))}</span>
+                          </div>
+                        );
+                        return <p key={li}>{renderInline(line)}</p>;
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

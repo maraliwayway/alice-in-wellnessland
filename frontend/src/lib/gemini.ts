@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 // No need to pass the key explicitly — just set it in .env.local.
 const ai = new GoogleGenAI({});
 
-const MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-3-flash-preview";
 
 /** Single-turn generation */
 export async function generateContent(prompt: string): Promise<string> {
