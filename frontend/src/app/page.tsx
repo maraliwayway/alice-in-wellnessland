@@ -1,65 +1,116 @@
-import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { Cormorant_Garamond } from "next/font/google";
 
-export default function Home() {
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const features = [
+  { icon: "🐱", label: "Cheshire Cat", desc: "Voice AI companion" },
+  { icon: "🍵", label: "Tea Party", desc: "Daily journal" },
+  { icon: "🐇", label: "White Rabbit", desc: "Habit tracking" },
+  { icon: "🪞", label: "Looking Glass", desc: "Mood history" },
+];
+
+// Precompute so CSS is valid — no runtime calc(var(--i)) needed
+const rings = [
+  { scale: 0.20, duration: "20s", reverse: false },
+  { scale: 0.35, duration: "26s", reverse: true  },
+  { scale: 0.50, duration: "34s", reverse: false },
+  { scale: 0.65, duration: "44s", reverse: true  },
+  { scale: 0.80, duration: "55s", reverse: false },
+  { scale: 0.96, duration: "68s", reverse: true  },
+];
+
+const particleColors = ["#c084fc", "#f472b6", "#fbbf24", "#e879f9", "#a78bfa"];
+
+const particles = Array.from({ length: 22 }, (_, i) => ({
+  left:     `${(i * 4.6 + 3) % 94}%`,
+  top:      `${(i * 7.3 + 5) % 90}%`,
+  size:     i % 5 === 0 ? 4 : i % 3 === 0 ? 2 : 3,
+  color:    particleColors[i % particleColors.length],
+  twinkle:  `${2.5 + (i % 5) * 0.6}s`,
+  float:    `${6  + (i % 7) * 0.8}s`,
+  delay:    `${(i * 0.35) % 4}s`,
+}));
+
+export default async function Home() {
+  const { userId } = await auth();
+  if (userId) redirect("/tea-party");
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className={`${cormorant.className} landing-root`}>
+      {/* Animated background mesh */}
+      <div className="mesh" aria-hidden />
+
+      {/* Rabbit hole vortex */}
+      <div className="vortex" aria-hidden>
+        {rings.map((r, i) => (
+          <div
+            key={i}
+            className="vortex-ring"
+            style={{
+              transform: `scale(${r.scale})`,
+              animation: `vortex-spin ${r.duration} linear infinite`,
+              animationDirection: r.reverse ? "reverse" : "normal",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Floating particles */}
+      <div className="particles" aria-hidden>
+        {particles.map((p, i) => (
+          <span
+            key={i}
+            className="particle"
+            style={{
+              left: p.left,
+              top: p.top,
+              width: p.size,
+              height: p.size,
+              background: p.color,
+              animationDuration: `${p.twinkle}, ${p.float}`,
+              animationDelay: p.delay,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="content">
+        <p className="eyebrow">a wellness journey</p>
+
+        <h1 className="title">
+          Alice in<br />
+          <em>Wellnessland</em>
+        </h1>
+
+        <p className="subtitle">
+          Fall down the rabbit hole of self-discovery.<br />
+          Your AI companion awaits on the other side.
+        </p>
+
+        <Link href="/login" className="cta">
+          <span>Follow the White Rabbit</span>
+          <span className="cta-arrow">↓</span>
+        </Link>
+
+        <div className="features">
+          {features.map((f) => (
+            <div key={f.label} className="feature-pill">
+              <span className="feature-icon">{f.icon}</span>
+              <div>
+                <div className="feature-name">{f.label}</div>
+                <div className="feature-desc">{f.desc}</div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

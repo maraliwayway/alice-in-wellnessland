@@ -18,7 +18,421 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* ─── Landing Page ──────────────────────────────────────────── */
+
+.landing-root {
+  position: relative;
+  min-height: 100vh;
+  background: #06050e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #f0ecff;
+}
+
+.mesh {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%, #1a0a3e 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, #1f0a2e 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, #0d0720 0%, transparent 70%);
+  animation: mesh-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-drift {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* Vortex */
+.vortex {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.vortex-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  transform-origin: center;
+}
+
+@keyframes vortex-spin {
+  from {
+    rotate: 0deg;
+  }
+
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation-name: twinkle, float-up;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes float-up {
+  from {
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateY(-28px) scale(1.3);
+  }
+}
+
+/* Content */
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  animation: fade-up 0.9s ease both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eyebrow {
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  font-weight: 400;
+  animation: fade-up 0.9s 0.1s ease both;
+}
+
+.title {
+  font-size: clamp(3.2rem, 9vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #f5f0ff;
+  animation: fade-up 0.9s 0.2s ease both;
+}
+
+.title em {
+  font-style: italic;
+  font-weight: 700;
+  background: linear-gradient(135deg, #c084fc 0%, #f472b6 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: #b8aed4;
+  font-weight: 300;
+  line-height: 1.75;
+  max-width: 40ch;
+  animation: fade-up 0.9s 0.35s ease both;
+}
+
+/* CTA */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 100px;
+  background: linear-gradient(135deg, #7c3aed, #be185d);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 0 32px rgba(139, 92, 246, 0.55), 0 0 64px rgba(139, 92, 246, 0.2);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  animation: fade-up 0.9s 0.5s ease both;
+}
+
+.cta:hover {
+  box-shadow: 0 0 48px rgba(139, 92, 246, 0.75), 0 0 96px rgba(139, 92, 246, 0.35);
+  transform: translateY(-2px);
+}
+
+.cta-arrow {
+  display: inline-block;
+  animation: bounce-down 1.6s ease-in-out infinite;
+}
+
+@keyframes bounce-down {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* Feature pills */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 0.75rem;
+  max-width: 580px;
+  animation: fade-up 0.9s 0.7s ease both;
+}
+
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(168, 85, 247, 0.22);
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.feature-pill:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.feature-icon {
+  font-size: 1rem;
+}
+
+.feature-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e9e3ff;
+  line-height: 1.2;
+}
+
+.feature-desc {
+  font-size: 0.7rem;
+  color: #8b7fb0;
+  line-height: 1.2;
+}
+
+/* ─── Login Page ─────────────────────────────────────────────── */
+
+.login-root {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #030503;
+}
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.login-bg-img {
+  /* left:50% + translate(-52%) centres the keyhole (≈52% from image left) */
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: max(100vw, calc(100vh * 1.439)) !important;
+  height: auto !important;
+  max-width: none !important;
+  animation: login-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes login-drift {
+  from {
+    transform: translate(-48%, -40%) scale(1);
+  }
+
+  to {
+    transform: translate(-48%, -40%) translate(-1vw, -0.5vh) scale(1);
+  }
+}
+
+.login-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 5, 3, 0.71);
+}
+
+.login-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 46% 58% at 50% 50%, rgba(108, 140, 28, 0.20) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* Card */
+.login-card {
+  position: relative;
+  z-index: 10;
+  color-scheme: dark;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 2.8rem 2.5rem 3rem;
+  max-width: 430px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.038);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(162, 190, 52, 0.22);
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 1px rgba(162, 190, 52, 0.06),
+    0 10px 72px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(162, 190, 52, 0.10);
+  animation: login-card-in 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes login-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: #8ca83a;
+  font-style: italic;
+  animation: login-card-in 0.85s 0.05s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.login-title {
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: #f2ede4;
+  text-align: center;
+  animation: login-card-in 0.85s 0.12s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.login-title em {
+  font-style: italic;
+  color: #c5d55e;
+}
+
+.login-subtitle {
+  font-size: 0.98rem;
+  font-style: italic;
+  color: #8e8878;
+  text-align: center;
+  margin-top: -0.4rem;
+  animation: login-card-in 0.85s 0.18s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.login-divider {
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(162, 190, 52, 0.45), transparent);
+  margin: 0.1rem 0;
+}
+
+/* Floating particles */
+.login-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.login-particle {
+  position: absolute;
+  opacity: 0;
+  animation: particle-drift linear infinite;
+  color: rgba(168, 194, 58, 0.55);
+  font-size: inherit;
+  line-height: 1;
+  user-select: none;
+}
+
+@keyframes particle-drift {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  8% {
+    opacity: 0.7;
+  }
+
+  88% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-70px, 110vh) rotate(380deg);
+  }
 }

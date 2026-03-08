@@ -34,18 +34,30 @@ async function getEntries(): Promise<JournalEntryDoc[]> {
   }
 }
 
-const lilyPads = [
-  { x: 210, y: 580, r: 52, rot: 15, drift: "pad-drift-a", rotAnim: "", dur: "22s", delay: "0s" },
-  { x: 295, y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "28s", delay: "3s" },
-  { x: 155, y: 660, r: 30, rot: 5, drift: "pad-drift-c", rotAnim: "", dur: "35s", delay: "1.5s" },
-  { x: 890, y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "", dur: "24s", delay: "2s" },
-  { x: 980, y: 480, r: 44, rot: 25, drift: "pad-drift-a", rotAnim: "pad-wobble-b", dur: "30s", delay: "0.8s" },
-  { x: 830, y: 460, r: 28, rot: -5, drift: "pad-drift-c", rotAnim: "", dur: "40s", delay: "4s" },
-  { x: 1180, y: 300, r: 48, rot: 20, drift: "pad-drift-a", rotAnim: "pad-wobble-a", dur: "26s", delay: "1s" },
-  { x: 540, y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "", dur: "32s", delay: "2.5s" },
+// Colours cycle through 3 green shades for variety
+const PAD_COLORS = ["#2a7a3a", "#3d8c48", "#5aaa5a", "#7ab840", "#1e6030"] as const;
+
+const lilyPads: { x: number; y: number; r: number; rot: number; drift: string; rotAnim: string; dur: string; delay: string; fill: string }[] = [
+  { x: 210,  y: 580, r: 52, rot: 15,  drift: "pad-drift-a", rotAnim: "",           dur: "22s", delay: "0s",   fill: PAD_COLORS[0] },
+  { x: 295,  y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "28s", delay: "3s",   fill: PAD_COLORS[2] },
+  { x: 155,  y: 660, r: 30, rot: 5,   drift: "pad-drift-c", rotAnim: "",           dur: "35s", delay: "1.5s", fill: PAD_COLORS[4] },
+  { x: 890,  y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "",           dur: "24s", delay: "2s",   fill: PAD_COLORS[0] },
+  { x: 980,  y: 480, r: 44, rot: 25,  drift: "pad-drift-a", rotAnim: "pad-wobble-b", dur: "30s", delay: "0.8s", fill: PAD_COLORS[3] },
+  { x: 830,  y: 460, r: 28, rot: -5,  drift: "pad-drift-c", rotAnim: "",           dur: "40s", delay: "4s",   fill: PAD_COLORS[1] },
+  { x: 1180, y: 300, r: 48, rot: 20,  drift: "pad-drift-a", rotAnim: "pad-wobble-a", dur: "26s", delay: "1s",   fill: PAD_COLORS[0] },
+  { x: 540,  y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "",           dur: "32s", delay: "2.5s", fill: PAD_COLORS[2] },
+  // Extra pads for dense coverage
+  { x: 680,  y: 200, r: 42, rot: 35,  drift: "pad-drift-c", rotAnim: "",           dur: "29s", delay: "0.6s", fill: PAD_COLORS[3] },
+  { x: 780,  y: 250, r: 30, rot: -20, drift: "pad-drift-a", rotAnim: "",           dur: "36s", delay: "2.2s", fill: PAD_COLORS[1] },
+  { x: 430,  y: 350, r: 50, rot: 10,  drift: "pad-drift-b", rotAnim: "pad-wobble-b", dur: "23s", delay: "1.4s", fill: PAD_COLORS[0] },
+  { x: 500,  y: 400, r: 33, rot: -40, drift: "pad-drift-c", rotAnim: "",           dur: "38s", delay: "3.8s", fill: PAD_COLORS[4] },
+  { x: 1100, y: 650, r: 46, rot: 8,   drift: "pad-drift-a", rotAnim: "",           dur: "27s", delay: "0.3s", fill: PAD_COLORS[2] },
+  { x: 1230, y: 600, r: 35, rot: -25, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "31s", delay: "1.9s", fill: PAD_COLORS[3] },
+  { x: 350,  y: 180, r: 38, rot: 50,  drift: "pad-drift-c", rotAnim: "",           dur: "33s", delay: "4.5s", fill: PAD_COLORS[1] },
+  { x: 1050, y: 170, r: 44, rot: -15, drift: "pad-drift-a", rotAnim: "",           dur: "25s", delay: "2.8s", fill: PAD_COLORS[0] },
 ];
 
-const lotusOnPads = [0, 3, 6];
+const lotusOnPads = [0, 3, 6, 10, 13];
 
 
 function FloatingFlower({ x, y, s, drift, dur, delay }: {
@@ -68,9 +80,9 @@ function FloatingFlower({ x, y, s, drift, dur, delay }: {
   );
 }
 
-function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay }: {
+function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay, fill }: {
   x: number; y: number; r: number; rot: number;
-  drift: string; rotAnim: string; dur: string; delay: string;
+  drift: string; rotAnim: string; dur: string; delay: string; fill: string;
 }) {
   const a1 = -Math.PI / 2 + Math.PI / 5;
   const a2 = -Math.PI / 2 - Math.PI / 5;
@@ -82,8 +94,8 @@ function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay }: {
   return (
     <g className={drift} style={{ animationDuration: dur, animationDelay: delay }}>
       <g transform={`rotate(${rot}, ${x}, ${y})`} className={rotAnim || undefined} style={rotAnim ? { transformOrigin: `${x}px ${y}px`, animationDuration: `${parseInt(dur) * 1.6}s`, animationDelay: delay } : undefined}>
-        <path d={d} fill="#2d6b3a" opacity="0.88" />
-        <path d={d} fill="none" stroke="#5a9a5a" strokeWidth="0.9" opacity="0.45" />
+        <path d={d} fill={fill} opacity="0.90" />
+        <path d={d} fill="none" stroke="#a8d870" strokeWidth="0.8" opacity="0.35" />
       </g>
     </g>
   );
@@ -189,7 +201,7 @@ export default async function TeaPartyPage() {
   return (
     <>
       <style>{`
-        .pond-page { min-height: 100vh; background: #1e6e82; position: relative; }
+        .pond-page { min-height: 100vh; background: #1a5e30; position: relative; }
         .pond-bg {
           position: fixed; inset: 0; z-index: 0;
           overflow: hidden; pointer-events: none;
@@ -261,22 +273,22 @@ export default async function TeaPartyPage() {
         <div className="pond-bg" aria-hidden>
           <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" className="pond-art">
             <defs>
-              {/* Water depth */}
+              {/* Water depth — vivid green */}
               <radialGradient id="wDeep" cx="50%" cy="48%" r="55%">
-                <stop offset="0%" stopColor="#2e8fa8" />
-                <stop offset="55%" stopColor="#1e7088" />
-                <stop offset="100%" stopColor="#155868" />
+                <stop offset="0%" stopColor="#2a9045" />
+                <stop offset="45%" stopColor="#1d7035" />
+                <stop offset="100%" stopColor="#0f4820" />
               </radialGradient>
               {/* Edge darkening */}
               <radialGradient id="wEdge" cx="50%" cy="50%" r="50%">
                 <stop offset="60%" stopColor="#000000" stopOpacity="0" />
-                <stop offset="100%" stopColor="#308cabff" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#0a3018" stopOpacity="0.55" />
               </radialGradient>
-              {/* Shimmer streak */}
+              {/* Shimmer streak — yellow-green */}
               <linearGradient id="wShimmer" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#90ddf0" stopOpacity="0" />
-                <stop offset="50%" stopColor="#90ddf0" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#90ddf0" stopOpacity="0" />
+                <stop offset="0%" stopColor="#a8e860" stopOpacity="0" />
+                <stop offset="50%" stopColor="#a8e860" stopOpacity="0.30" />
+                <stop offset="100%" stopColor="#a8e860" stopOpacity="0" />
               </linearGradient>
             </defs>
 
@@ -307,7 +319,7 @@ export default async function TeaPartyPage() {
                   cx={origin.x} cy={origin.y}
                   r={4}
                   fill="none"
-                  stroke="#4a9a78"
+                  stroke="#6abf50"
                   strokeWidth="0.9"
                   opacity="0.55"
                   className="ripple-ring"
@@ -364,23 +376,23 @@ export default async function TeaPartyPage() {
           {/* Nav */}
           <nav className="flex items-center gap-3 mb-10">
             <Link href="/wonderland"
-              className="text-[0.68rem] tracking-[0.22em] uppercase text-teal-400/55 hover:text-teal-300/85 transition-colors">
+              className="text-[0.68rem] tracking-[0.22em] uppercase text-green-400/60 hover:text-green-300/90 transition-colors">
               ← Wonderland
             </Link>
-            <span className="text-teal-800/35">◈</span>
-            <span className="text-[0.68rem] tracking-[0.22em] uppercase text-teal-400/35">The Garden</span>
+            <span className="text-green-900/40">◈</span>
+            <span className="text-[0.68rem] tracking-[0.22em] uppercase text-green-400/35">The Garden</span>
           </nav>
 
           {/* Header */}
           <header className="mb-10 text-center">
-            <p className="text-[0.68rem] tracking-[0.32em] uppercase text-[#5ab8a0] mb-4">
+            <p className="text-[0.68rem] tracking-[0.32em] uppercase text-[#7acc80] mb-4">
               mad hatter&apos;s tea party
             </p>
-            <h1 className="text-[clamp(2.3rem,6vw,3.7rem)] font-light text-[#e8e4d8] leading-[1.08] mb-4">
+            <h1 className="text-[clamp(2.3rem,6vw,3.7rem)] font-light text-[#e8f0e0] leading-[1.08] mb-4">
               The Enchanted<br />
               <em className="font-semibold text-[#f0c830]">Garden Journal</em>
             </h1>
-            <p className="text-[#5a9888] text-[1.05rem] font-light leading-relaxed max-w-[38ch] mx-auto">
+            <p className="text-[#7aaa7a] text-[1.05rem] font-light leading-relaxed max-w-[38ch] mx-auto">
               Let your thoughts ripple outward.<br />
               The Cheshire Cat is listening.
             </p>
@@ -388,23 +400,23 @@ export default async function TeaPartyPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 mb-10">
-            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(74,152,128,0.32),transparent)]" />
+            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(80,180,80,0.32),transparent)]" />
             <span className="text-lg">🍵</span>
-            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(74,152,128,0.32),transparent)]" />
+            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(80,180,80,0.32),transparent)]" />
           </div>
 
           {/* Journal form card */}
-          <div className="rounded-3xl border border-[rgba(100,200,180,0.25)] p-6 md:p-8 bg-[rgba(8,55,70,0.52)] backdrop-blur-2xl">
+          <div className="rounded-3xl border border-[rgba(80,180,80,0.25)] p-6 md:p-8 bg-[rgba(6,28,12,0.62)] backdrop-blur-2xl">
             <JournalEntry userId="demo-user" />
           </div>
 
           {/* Past entries */}
           <section className="mt-12">
-            <h2 className="text-xl font-light text-[#7ab8a8] mb-5">
+            <h2 className="text-xl font-light text-[#8acc88] mb-5">
               Your Story So Far
             </h2>
             {entries.length === 0 ? (
-              <p className="text-center text-[#36685a] text-sm py-10">
+              <p className="text-center text-[#4a8a50] text-sm py-10">
                 Your story is just beginning... ☕
               </p>
             ) : (

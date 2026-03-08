@@ -1,22 +1,32 @@
 "use client";
-import { useEffect, useState } from "react";
+import { SignIn } from "@clerk/nextjs";
 
 export default function PassageAuth() {
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        // Dynamically import the custom element when mounted
-        import("@passageidentity/passage-elements/passage-auth").then(() => {
-            setIsMounted(true);
-        });
-    }, []);
-
-    if (!isMounted) return <div className="animate-pulse bg-zinc-800 rounded-lg h-96 w-full"></div>;
-
-    return (
-        <div className="w-full flex justify-center">
-            {/* @ts-expect-error Custom element */}
-            <passage-auth app-id={process.env.NEXT_PUBLIC_PASSAGE_APP_ID}></passage-auth>
-        </div>
-    );
+  return (
+    <div className="w-full">
+      <SignIn
+        routing="hash"
+        appearance={{
+          variables: {
+            colorBackground:     "transparent",
+            colorPrimary:        "#a8c23a",
+            colorText:           "#f0ebe0",
+            colorTextSecondary:  "#8a8470",
+            colorInputBackground:"rgba(255,255,255,0.08)",
+            colorInputText:      "#f0ebe0",
+            colorNeutral:        "#a8a090",
+            borderRadius:        "2px",
+            fontFamily:          "var(--font-im-fell), 'IM Fell English', serif",
+          },
+          elements: {
+            card:    { boxShadow: "none", border: "none" },
+            cardBox: { boxShadow: "none" },
+            header:  { display: "none" },
+            footer:  { background: "transparent" },
+            footerActionLink: { color: "#a8c23a" },
+          },
+        }}
+      />
+    </div>
+  );
 }

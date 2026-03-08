@@ -49,14 +49,14 @@ export default function JournalCard({ entry }: JournalCardProps) {
 
   return (
     <div
-      className="rounded-2xl p-5 border transition-all duration-300 hover:border-teal-600/40 hover:shadow-lg"
-      style={{ background: "rgba(8,55,70,0.48)", backdropFilter: "blur(12px)", borderColor: "rgba(100,200,180,0.22)" }}
+      className="rounded-2xl p-5 border transition-all duration-300 hover:border-green-600/40 hover:shadow-lg"
+      style={{ background: "rgba(6,28,10,0.55)", backdropFilter: "blur(12px)", borderColor: "rgba(80,180,80,0.22)" }}
     >
       {/* Top row */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl">{emoji}</span>
-          <span className="text-[#b8d8cc] text-sm font-medium">{moodLabel}</span>
+          <span className="text-[#b8d8a8] text-sm font-medium">{moodLabel}</span>
           {entry.moodRating != null && (
             <span className="text-lg ml-1">{MOOD_EMOJIS_MAP[entry.moodRating]}</span>
           )}
@@ -67,14 +67,14 @@ export default function JournalCard({ entry }: JournalCardProps) {
       </div>
 
       {/* Date */}
-      <p className="text-[#6ab8a8] text-xs mt-1">{formatDate(entry.createdAt)}</p>
+      <p className="text-[#6ab870] text-xs mt-1">{formatDate(entry.createdAt)}</p>
 
       {/* Content preview */}
-      <p className="text-[#8abcb0] text-sm mt-2 leading-relaxed">{preview}</p>
+      <p className="text-[#8abc88] text-sm mt-2 leading-relaxed">{preview}</p>
 
       {/* Affirmation */}
       {entry.affirmation && (
-        <p className="italic text-[#3a7868] text-xs mt-2">
+        <p className="italic text-[#4a9858] text-xs mt-2">
           🐱 {entry.affirmation}
         </p>
       )}
