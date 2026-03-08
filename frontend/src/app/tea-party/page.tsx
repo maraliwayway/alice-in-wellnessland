@@ -319,7 +319,6 @@ export default async function TeaPartyPage() {
                   className="ripple-ring"
                   style={{
                     animationDelay: `calc(${origin.delay} + ${ri * 1.0}s)`,
-                    animationDuration: "4s",
                   }} />
               ))
             )}
