@@ -235,6 +235,22 @@ const koiDefs = [
   },
 ];
 
+const reeds = [
+  { x:   40, h: 180, lean:  8, delay: "0s"   },
+  { x:   70, h: 140, lean: -6, delay: "0.4s" },
+  { x:  100, h: 200, lean:  4, delay: "0.9s" },
+  { x:  130, h: 160, lean: -9, delay: "0.2s" },
+  { x:  160, h: 190, lean:  6, delay: "1.1s" },
+  { x: 1300, h: 170, lean: -7, delay: "0.6s" },
+  { x: 1330, h: 210, lean:  5, delay: "0s"   },
+  { x: 1360, h: 145, lean: -4, delay: "0.8s" },
+  { x: 1390, h: 185, lean:  8, delay: "1.4s" },
+  { x: 1415, h: 155, lean: -5, delay: "0.3s" },
+  { x:  380, h:  90, lean:  3, delay: "0.7s" },
+  { x:  760, h: 100, lean: -4, delay: "1.0s" },
+  { x: 1050, h:  85, lean:  5, delay: "0.5s" },
+];
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function TeaPartyPage() {
@@ -291,6 +307,11 @@ export default async function TeaPartyPage() {
           100% { r: 80; opacity: 0;    }
         }
         .ripple-ring { animation: ripple-expand 4s ease-out infinite; }
+        @keyframes reed-sway {
+          0%, 100% { transform: rotate(0deg); }
+          50%       { transform: rotate(2.5deg); }
+        }
+        .reed { animation: reed-sway 3.5s ease-in-out infinite; transform-origin: bottom center; }
       `}</style>
 
       <div className={`${cormorant.className} pond-page`}>
@@ -375,6 +396,23 @@ export default async function TeaPartyPage() {
                 </animateMotion>
               </g>
             ))}
+
+            {/* Reeds */}
+            {reeds.map((rd, i) => (
+              <g key={i} className="reed" style={{ animationDelay: rd.delay }}>
+                <line
+                  x1={rd.x} y1={900}
+                  x2={rd.x + rd.lean} y2={900 - rd.h}
+                  stroke="#1a3a20" strokeWidth="2.2" opacity="0.72" />
+                <ellipse
+                  cx={rd.x + rd.lean} cy={900 - rd.h - 10}
+                  rx="3" ry="9"
+                  fill="#1a3a20" opacity="0.65" />
+              </g>
+            ))}
+
+            {/* Top veil */}
+            <rect width="1440" height="80" fill="#060d10" opacity="0.45" />
           </svg>
         </div>
 
