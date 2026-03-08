@@ -2,6 +2,23 @@ import { NextResponse } from 'next/server';
 import { ai } from '@/lib/gemini';
 import { Type, Schema } from '@google/genai';
 
+interface JournalEntry {
+    entry_text: string;
+    mood_score: number | null;
+    activities: string[];
+    emotions: string[];
+    stressors: string[];
+    social_interactions: string[];
+    health_behaviors: string[];
+    created_at: Date;
+}
+
+const journalEntries: JournalEntry[] = [];
+
+export function getJournalEntries() {
+    return journalEntries;
+}
+
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -53,6 +70,19 @@ ${entry}`;
             console.error('Error parsing Gemini JSON response:', parseError);
             return NextResponse.json({ error: 'Failed to parse Gemini response' }, { status: 500 });
         }
+
+        const structuredData = {
+            entry_text: entry,
+            mood_score: result?.mood_score ?? null,
+            activities: result?.activities ?? [],
+            emotions: result?.emotions ?? [],
+            stressors: result?.stressors ?? [],
+            social_interactions: result?.social_interactions ?? [],
+            health_behaviors: result?.health_behaviors ?? [],
+            created_at: new Date()
+        };
+
+        journalEntries.push(structuredData);
 
         return NextResponse.json({
             success: true,
