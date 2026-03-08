@@ -35,14 +35,14 @@ async function getEntries(): Promise<JournalEntryDoc[]> {
 }
 
 const lilyPads = [
-  { x: 210,  y: 580, r: 52, rot: 15,  drift: "pad-drift-a", rotAnim: "",            dur: "22s", delay: "0s"   },
-  { x: 295,  y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "28s", delay: "3s"   },
-  { x: 155,  y: 660, r: 30, rot: 5,   drift: "pad-drift-c", rotAnim: "",            dur: "35s", delay: "1.5s" },
-  { x: 890,  y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "",            dur: "24s", delay: "2s"   },
-  { x: 980,  y: 480, r: 44, rot: 25,  drift: "pad-drift-a", rotAnim: "pad-wobble-b", dur: "30s", delay: "0.8s" },
-  { x: 830,  y: 460, r: 28, rot: -5,  drift: "pad-drift-c", rotAnim: "",            dur: "40s", delay: "4s"   },
-  { x: 1180, y: 300, r: 48, rot: 20,  drift: "pad-drift-a", rotAnim: "pad-wobble-a", dur: "26s", delay: "1s"   },
-  { x: 540,  y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "",            dur: "32s", delay: "2.5s" },
+  { x: 210, y: 580, r: 52, rot: 15, drift: "pad-drift-a", rotAnim: "", dur: "22s", delay: "0s" },
+  { x: 295, y: 630, r: 38, rot: -30, drift: "pad-drift-b", rotAnim: "pad-wobble-a", dur: "28s", delay: "3s" },
+  { x: 155, y: 660, r: 30, rot: 5, drift: "pad-drift-c", rotAnim: "", dur: "35s", delay: "1.5s" },
+  { x: 890, y: 420, r: 58, rot: -10, drift: "pad-drift-b", rotAnim: "", dur: "24s", delay: "2s" },
+  { x: 980, y: 480, r: 44, rot: 25, drift: "pad-drift-a", rotAnim: "pad-wobble-b", dur: "30s", delay: "0.8s" },
+  { x: 830, y: 460, r: 28, rot: -5, drift: "pad-drift-c", rotAnim: "", dur: "40s", delay: "4s" },
+  { x: 1180, y: 300, r: 48, rot: 20, drift: "pad-drift-a", rotAnim: "pad-wobble-a", dur: "26s", delay: "1s" },
+  { x: 540, y: 720, r: 36, rot: -15, drift: "pad-drift-b", rotAnim: "", dur: "32s", delay: "2.5s" },
 ];
 
 const lotusOnPads = [0, 3, 6];
@@ -62,7 +62,7 @@ function FloatingFlower({ x, y, s, drift, dur, delay }: {
             transform={`rotate(${a})`} />
         ))}
         <circle cx="0" cy="0" r="5.5" fill="#f5c842" />
-        <circle cx="0" cy="0" r="3"   fill="#e8a820" opacity="0.9" />
+        <circle cx="0" cy="0" r="3" fill="#e8a820" opacity="0.9" />
       </g>
     </g>
   );
@@ -113,18 +113,18 @@ function Lotus({ x, y, r }: { x: number; y: number; r: number }) {
 }
 
 const floatingFlowers = [
-  { x: 420,  y: 200, s: 1.1,  drift: "pad-drift-a", dur: "19s", delay: "0s"   },
-  { x: 720,  y: 380, s: 0.85, drift: "pad-drift-c", dur: "25s", delay: "2.2s" },
-  { x: 1100, y: 250, s: 1.0,  drift: "pad-drift-b", dur: "22s", delay: "1.0s" },
-  { x: 340,  y: 450, s: 0.75, drift: "pad-drift-a", dur: "30s", delay: "3.5s" },
-  { x: 1260, y: 560, s: 0.9,  drift: "pad-drift-c", dur: "27s", delay: "0.5s" },
-  { x: 640,  y: 560, s: 0.8,  drift: "pad-drift-b", dur: "34s", delay: "1.8s" },
+  { x: 420, y: 200, s: 1.1, drift: "pad-drift-a", dur: "19s", delay: "0s" },
+  { x: 720, y: 380, s: 0.85, drift: "pad-drift-c", dur: "25s", delay: "2.2s" },
+  { x: 1100, y: 250, s: 1.0, drift: "pad-drift-b", dur: "22s", delay: "1.0s" },
+  { x: 340, y: 450, s: 0.75, drift: "pad-drift-a", dur: "30s", delay: "3.5s" },
+  { x: 1260, y: 560, s: 0.9, drift: "pad-drift-c", dur: "27s", delay: "0.5s" },
+  { x: 640, y: 560, s: 0.8, drift: "pad-drift-b", dur: "34s", delay: "1.8s" },
 ];
 
 // Ripple centres match lotus pad positions (lotusOnPads = [0, 3, 6])
 const rippleOrigins = [
-  { x: 210,  y: 580, delay: "0s"   },  // pad 0
-  { x: 890,  y: 420, delay: "1.8s" },  // pad 3
+  { x: 210, y: 580, delay: "0s" },  // pad 0
+  { x: 890, y: 420, delay: "1.8s" },  // pad 3
   { x: 1180, y: 300, delay: "3.2s" },  // pad 6
 ];
 const RIPPLE_COUNT = 4;
@@ -166,19 +166,19 @@ const koiDefs = [
 ];
 
 const reeds = [
-  { x:   40, h: 180, lean:  8, delay: "0s"   },
-  { x:   70, h: 140, lean: -6, delay: "0.4s" },
-  { x:  100, h: 200, lean:  4, delay: "0.9s" },
-  { x:  130, h: 160, lean: -9, delay: "0.2s" },
-  { x:  160, h: 190, lean:  6, delay: "1.1s" },
+  { x: 40, h: 180, lean: 8, delay: "0s" },
+  { x: 70, h: 140, lean: -6, delay: "0.4s" },
+  { x: 100, h: 200, lean: 4, delay: "0.9s" },
+  { x: 130, h: 160, lean: -9, delay: "0.2s" },
+  { x: 160, h: 190, lean: 6, delay: "1.1s" },
   { x: 1300, h: 170, lean: -7, delay: "0.6s" },
-  { x: 1330, h: 210, lean:  5, delay: "0s"   },
+  { x: 1330, h: 210, lean: 5, delay: "0s" },
   { x: 1360, h: 145, lean: -4, delay: "0.8s" },
-  { x: 1390, h: 185, lean:  8, delay: "1.4s" },
+  { x: 1390, h: 185, lean: 8, delay: "1.4s" },
   { x: 1415, h: 155, lean: -5, delay: "0.3s" },
-  { x:  380, h:  90, lean:  3, delay: "0.7s" },
-  { x:  760, h: 100, lean: -4, delay: "1.0s" },
-  { x: 1050, h:  85, lean:  5, delay: "0.5s" },
+  { x: 380, h: 90, lean: 3, delay: "0.7s" },
+  { x: 760, h: 100, lean: -4, delay: "1.0s" },
+  { x: 1050, h: 85, lean: 5, delay: "0.5s" },
 ];
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -263,19 +263,19 @@ export default async function TeaPartyPage() {
             <defs>
               {/* Water depth */}
               <radialGradient id="wDeep" cx="50%" cy="48%" r="55%">
-                <stop offset="0%"   stopColor="#2e8fa8" />
-                <stop offset="55%"  stopColor="#1e7088" />
+                <stop offset="0%" stopColor="#2e8fa8" />
+                <stop offset="55%" stopColor="#1e7088" />
                 <stop offset="100%" stopColor="#155868" />
               </radialGradient>
               {/* Edge darkening */}
               <radialGradient id="wEdge" cx="50%" cy="50%" r="50%">
-                <stop offset="60%"  stopColor="#000000" stopOpacity="0" />
-                <stop offset="100%" stopColor="#0a2e3a" stopOpacity="0.5" />
+                <stop offset="60%" stopColor="#000000" stopOpacity="0" />
+                <stop offset="100%" stopColor="#308cabff" stopOpacity="0.5" />
               </radialGradient>
               {/* Shimmer streak */}
               <linearGradient id="wShimmer" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%"   stopColor="#90ddf0" stopOpacity="0" />
-                <stop offset="50%"  stopColor="#90ddf0" stopOpacity="0.35" />
+                <stop offset="0%" stopColor="#90ddf0" stopOpacity="0" />
+                <stop offset="50%" stopColor="#90ddf0" stopOpacity="0.35" />
                 <stop offset="100%" stopColor="#90ddf0" stopOpacity="0" />
               </linearGradient>
             </defs>
@@ -286,10 +286,10 @@ export default async function TeaPartyPage() {
 
             {/* Shimmer streaks */}
             {[
-              { x: 180, y: 120, w: 420, h: 180, rot: -18, delay: "0s"   },
-              { x: 680, y: 280, w: 380, h: 140, rot:  12, delay: "2.1s" },
-              { x: 980, y: 160, w: 320, h: 160, rot:  -8, delay: "1.3s" },
-              { x: 320, y: 520, w: 440, h: 120, rot:  20, delay: "3.4s" },
+              { x: 180, y: 120, w: 420, h: 180, rot: -18, delay: "0s" },
+              { x: 680, y: 280, w: 380, h: 140, rot: 12, delay: "2.1s" },
+              { x: 980, y: 160, w: 320, h: 160, rot: -8, delay: "1.3s" },
+              { x: 320, y: 520, w: 440, h: 120, rot: 20, delay: "3.4s" },
               { x: 800, y: 580, w: 360, h: 100, rot: -14, delay: "0.7s" },
             ].map((s, i) => (
               <ellipse key={i}
@@ -394,7 +394,7 @@ export default async function TeaPartyPage() {
           </div>
 
           {/* Journal form card */}
-          <div className="rounded-3xl border border-[rgba(80,160,100,0.18)] p-6 md:p-8 bg-[rgba(6,18,14,0.72)] backdrop-blur-2xl">
+          <div className="rounded-3xl border border-[rgba(100,200,180,0.25)] p-6 md:p-8 bg-[rgba(8,55,70,0.52)] backdrop-blur-2xl">
             <JournalEntry userId="demo-user" />
           </div>
 
