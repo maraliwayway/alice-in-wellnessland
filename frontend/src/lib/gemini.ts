@@ -1,14 +1,6 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
-
-export const geminiFlash = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
-});
-
-export const geminiEmbedding = genAI.getGenerativeModel({
-    model: "text-embedding-004",
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY ?? "" });
 
 export interface JournalAnalysis {
     mood: string;
@@ -33,12 +25,12 @@ export async function analyzeJournalEntry(
     const systemPrompt = `You are a warm, wise AI companion for a co-op intern navigating their first tech job. You speak like a caring mentor — never clinical, never dismissive. Analyze this journal entry and return ONLY valid JSON with: mood (one word emotion), moodScore (1-10, 10=happiest), validation (1 sentence acknowledging their feelings without toxic positivity), clarity (1-2 sentence practical suggestion — e.g. how to communicate with their tech lead, how to frame a question, how to approach an unclear ticket), affirmation (1 warm encouraging sentence, can reference Alice in Wonderland characters subtly — Cheshire Cat, Caterpillar's 'Who are you?', etc.). Only return valid JSON, nothing else.`;
 
     try {
-        const result = await geminiFlash.generateContent([
-            { text: systemPrompt },
-            { text: transcribedText },
-        ]);
+        const response = await ai.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: `${systemPrompt}\n\n${transcribedText}`,
+        });
 
-        const responseText = result.response.text().trim();
+        const responseText = (response.text ?? "").trim();
 
         // Strip markdown code fences if present
         const cleaned = responseText
@@ -55,6 +47,9 @@ export async function analyzeJournalEntry(
 }
 
 export async function getEmbedding(text: string): Promise<number[]> {
-    const result = await geminiEmbedding.embedContent(text);
-    return result.embedding.values;
+    const result = await ai.models.embedContent({
+        model: "text-embedding-004",
+        contents: text,
+    });
+    return result.embeddings?.[0]?.values ?? [];
 }
