@@ -1,36 +1,35 @@
 import { MongoClient, Db } from "mongodb";
+import { getMongoUri } from "@/lib/secrets";
 
 declare global {
-    // eslint-disable-next-line no-var
-    var _mongoClientPromise: Promise<MongoClient> | undefined;
+  // eslint-disable-next-line no-var
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-const uri = process.env.MONGODB_URI ?? "";
-const options = {};
+let _clientPromise: Promise<MongoClient> | null = null;
 
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-if (!uri) {
-    throw new Error("Please add your MONGODB_URI to .env");
-}
-
-if (process.env.NODE_ENV === "development") {
+async function getClientPromise(): Promise<MongoClient> {
+  if (process.env.NODE_ENV === "development") {
     if (!global._mongoClientPromise) {
-        client = new MongoClient(uri, options);
-        global._mongoClientPromise = client.connect();
+      const uri = await getMongoUri();
+      const client = new MongoClient(uri);
+      global._mongoClientPromise = client.connect();
     }
-    clientPromise = global._mongoClientPromise;
-} else {
-    client = new MongoClient(uri, options);
-    clientPromise = client.connect();
+    return global._mongoClientPromise;
+  }
+
+  if (!_clientPromise) {
+    const uri = await getMongoUri();
+    const client = new MongoClient(uri);
+    _clientPromise = client.connect();
+  }
+  return _clientPromise;
 }
 
 export async function connectToDatabase(): Promise<{
-    db: Db;
-    client: MongoClient;
+  db: Db;
+  client: MongoClient;
 }> {
-    const connectedClient = await clientPromise;
-    const db = connectedClient.db("wellnessland");
-    return { db, client: connectedClient };
+  const client = await getClientPromise();
+  return { db: client.db("wellnessland"), client };
 }
