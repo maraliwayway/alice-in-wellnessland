@@ -189,7 +189,7 @@ export default async function TeaPartyPage() {
   return (
     <>
       <style>{`
-        .pond-page { min-height: 100vh; background: #060e1c; position: relative; }
+        .pond-page { min-height: 100vh; background: #0d3a4a; position: relative; }
         .pond-bg {
           position: fixed; inset: 0; z-index: 0;
           overflow: hidden; pointer-events: none;
@@ -263,20 +263,20 @@ export default async function TeaPartyPage() {
             <defs>
               {/* Water depth */}
               <radialGradient id="wDeep" cx="50%" cy="48%" r="55%">
-                <stop offset="0%"   stopColor="#071828" />
-                <stop offset="55%"  stopColor="#0a2238" />
-                <stop offset="100%" stopColor="#0d2e42" />
+                <stop offset="0%"   stopColor="#1a6070" />
+                <stop offset="55%"  stopColor="#0f4a5c" />
+                <stop offset="100%" stopColor="#0a3548" />
               </radialGradient>
               {/* Edge darkening */}
               <radialGradient id="wEdge" cx="50%" cy="50%" r="50%">
                 <stop offset="60%"  stopColor="#000000" stopOpacity="0" />
-                <stop offset="100%" stopColor="#030a14" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="#071e28" stopOpacity="0.65" />
               </radialGradient>
               {/* Shimmer streak */}
               <linearGradient id="wShimmer" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%"   stopColor="#2a6888" stopOpacity="0" />
-                <stop offset="50%"  stopColor="#2a6888" stopOpacity="0.22" />
-                <stop offset="100%" stopColor="#2a6888" stopOpacity="0" />
+                <stop offset="0%"   stopColor="#5ab8d0" stopOpacity="0" />
+                <stop offset="50%"  stopColor="#5ab8d0" stopOpacity="0.28" />
+                <stop offset="100%" stopColor="#5ab8d0" stopOpacity="0" />
               </linearGradient>
             </defs>
 
