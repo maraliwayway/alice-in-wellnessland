@@ -4,14 +4,14 @@ import { getGeminiFlash } from "@/lib/gemini";
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const audio = formData.get("audio") as File;
-
-    if (!audio) {
+    const audioEntry = formData.get("audio");
+    if (!(audioEntry instanceof File)) {
       return NextResponse.json(
         { error: "No audio file provided" },
         { status: 400 }
       );
     }
+    const audio = audioEntry;
 
     const buffer = Buffer.from(await audio.arrayBuffer());
     const base64 = buffer.toString("base64");
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const result = await model.generateContent([
       {
         inlineData: {
-          mimeType: (audio.type || "audio/webm") as string,
+          mimeType: audio.type || "audio/webm",
           data: base64,
         },
       },
