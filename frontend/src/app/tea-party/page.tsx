@@ -48,6 +48,26 @@ const lilyPads = [
 const lotusOnPads = [0, 3, 6];
 
 
+function FloatingFlower({ x, y, s, drift, dur, delay }: {
+  x: number; y: number; s: number; drift: string; dur: string; delay: string;
+}) {
+  return (
+    <g className={drift} style={{ animationDuration: dur, animationDelay: delay }}>
+      <g transform={`translate(${x},${y}) scale(${s})`}>
+        {[0, 40, 80, 120, 160, 200, 240, 280, 320].map((a) => (
+          <ellipse key={a}
+            cx="0" cy="-10"
+            rx="4" ry="9"
+            fill="#f8f4ee" opacity="0.93"
+            transform={`rotate(${a})`} />
+        ))}
+        <circle cx="0" cy="0" r="5.5" fill="#f5c842" />
+        <circle cx="0" cy="0" r="3"   fill="#e8a820" opacity="0.9" />
+      </g>
+    </g>
+  );
+}
+
 function LilyPad({ x, y, r, rot, drift, rotAnim, dur, delay }: {
   x: number; y: number; r: number; rot: number;
   drift: string; rotAnim: string; dur: string; delay: string;
@@ -92,10 +112,20 @@ function Lotus({ x, y, r }: { x: number; y: number; r: number }) {
   );
 }
 
+const floatingFlowers = [
+  { x: 420,  y: 200, s: 1.1,  drift: "pad-drift-a", dur: "19s", delay: "0s"   },
+  { x: 720,  y: 380, s: 0.85, drift: "pad-drift-c", dur: "25s", delay: "2.2s" },
+  { x: 1100, y: 250, s: 1.0,  drift: "pad-drift-b", dur: "22s", delay: "1.0s" },
+  { x: 340,  y: 450, s: 0.75, drift: "pad-drift-a", dur: "30s", delay: "3.5s" },
+  { x: 1260, y: 560, s: 0.9,  drift: "pad-drift-c", dur: "27s", delay: "0.5s" },
+  { x: 640,  y: 560, s: 0.8,  drift: "pad-drift-b", dur: "34s", delay: "1.8s" },
+];
+
+// Ripple centres match lotus pad positions (lotusOnPads = [0, 3, 6])
 const rippleOrigins = [
-  { x: 480,  y: 340, delay: "0s"   },
-  { x: 1050, y: 520, delay: "1.8s" },
-  { x: 240,  y: 680, delay: "3.2s" },
+  { x: 210,  y: 580, delay: "0s"   },  // pad 0
+  { x: 890,  y: 420, delay: "1.8s" },  // pad 3
+  { x: 1180, y: 300, delay: "3.2s" },  // pad 6
 ];
 const RIPPLE_COUNT = 4;
 
@@ -275,6 +305,7 @@ export default async function TeaPartyPage() {
             {lotusOnPads.map((i) => (
               <Lotus key={i} x={lilyPads[i].x} y={lilyPads[i].y} r={lilyPads[i].r * 0.42} />
             ))}
+            {floatingFlowers.map((f, i) => <FloatingFlower key={i} {...f} />)}
             {rippleOrigins.map((origin, oi) =>
               Array.from({ length: RIPPLE_COUNT }, (_, ri) => (
                 <circle key={`${oi}-${ri}`}
