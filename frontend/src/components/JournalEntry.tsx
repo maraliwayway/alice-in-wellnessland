@@ -101,7 +101,7 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
             <div className="flex justify-center gap-6 my-8">
               <button
                 onClick={() => setMode("voice")}
-                className="flex flex-col items-center gap-3 px-8 py-6 rounded-2xl border transition-all duration-300 hover:scale-105"
+                className="flex flex-col items-center justify-center gap-3 w-40 h-44 rounded-2xl border transition-all duration-300 hover:scale-105"
                 style={{
                   background: "rgba(6,28,12,0.55)",
                   borderColor: "rgba(80,180,80,0.30)",
@@ -113,7 +113,7 @@ export default function JournalEntry({ userId, onEntryCreated }: JournalEntryPro
               </button>
               <button
                 onClick={() => setMode("write")}
-                className="flex flex-col items-center gap-3 px-8 py-6 rounded-2xl border transition-all duration-300 hover:scale-105"
+                className="flex flex-col items-center justify-center gap-3 w-40 h-44 rounded-2xl border transition-all duration-300 hover:scale-105"
                 style={{
                   background: "rgba(6,28,12,0.55)",
                   borderColor: "rgba(80,180,80,0.30)",

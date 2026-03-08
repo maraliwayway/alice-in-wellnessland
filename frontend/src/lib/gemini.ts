@@ -16,6 +16,21 @@ export async function getGeminiFlash() {
   return getGenAI();
 }
 
+// Eagerly-initialized singleton for route files that import `ai` directly
+// Falls back gracefully if the env var isn't set yet (server will error on first call)
+export const ai = {
+  models: {
+    async generateContent(opts: { model: string; contents: string | string[]; config?: Record<string, unknown> }) {
+      const genAI = await getGenAI();
+      return genAI.models.generateContent(opts);
+    },
+    async embedContent(opts: { model: string; contents: string }) {
+      const genAI = await getGenAI();
+      return genAI.models.embedContent(opts);
+    },
+  },
+};
+
 export async function getGeminiEmbedding() {
   return getGenAI();
 }

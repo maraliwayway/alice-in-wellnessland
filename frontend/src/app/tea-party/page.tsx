@@ -1,12 +1,11 @@
-import { Cormorant_Garamond } from "next/font/google";
+import { Alice } from "next/font/google";
 import Link from "next/link";
 import JournalEntry from "@/components/JournalEntry";
 import JournalCard from "@/components/JournalCard";
 
-const cormorant = Cormorant_Garamond({
+const alice = Alice({
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
-  style: ["normal", "italic"],
+  weight: "400",
 });
 
 interface JournalEntryDoc {
@@ -217,7 +216,8 @@ export default async function TeaPartyPage() {
           min-height: 100vh;
           display: flex;
           flex-direction: column;
-          justify-content: flex-end;
+          justify-content: center;
+          align-items: center;
         }
         @keyframes water-shimmer {
           0%, 100% { opacity: 0.3; }
@@ -274,7 +274,7 @@ export default async function TeaPartyPage() {
         .reed { animation: reed-sway 3.5s ease-in-out infinite; transform-origin: bottom center; }
       `}</style>
 
-      <div className={`${cormorant.className} pond-page`}>
+      <div className={`${alice.className} pond-page`}>
 
         {/* Background image */}
         <img src="/journalbg.jpg" alt="" aria-hidden className="pond-page-bg-img" />
@@ -380,8 +380,23 @@ export default async function TeaPartyPage() {
         {/* Scrollable content */}
         <div className="pond-content">
 
+          {/* Title */}
+          <h1
+            style={{
+              fontSize: "3.5rem",
+              fontWeight: 700,
+              color: "#f0f5ec",
+              whiteSpace: "nowrap",
+              textAlign: "center",
+              marginBottom: "1rem",
+              textShadow: "0 2px 8px rgba(0,0,0,0.4)",
+            }}
+          >
+            Down the Rabbit Hole
+          </h1>
+
           {/* Journal form card */}
-          <div className="rounded-2xl border border-[rgba(80,180,80,0.25)] p-4 md:p-6 bg-[rgba(6,28,12,0.62)] backdrop-blur-2xl">
+          <div className="w-full rounded-2xl border border-[rgba(80,180,80,0.25)] p-4 md:p-6 bg-[rgba(6,28,12,0.62)] backdrop-blur-2xl">
             <JournalEntry userId="demo-user" />
           </div>
 
