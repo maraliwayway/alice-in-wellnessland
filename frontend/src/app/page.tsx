@@ -1,13 +1,17 @@
 import { JournalAnalyzer } from "@/components/JournalAnalyzer";
+import { WonderlandInsight } from "@/components/WonderlandInsight";
 
 export default function Home() {
     return (
-        <main className="p-10">
-            <h1 className="text-2xl font-bold mb-6">
+        <main className="min-h-screen bg-rose-50/20 p-6 sm:p-10">
+            <h1 className="text-3xl font-serif text-purple-900 font-bold mb-8 text-center mt-4">
                 Wellness Journal Analyzer
             </h1>
 
-            <JournalAnalyzer />
+            <div className="flex flex-col gap-10">
+                <JournalAnalyzer />
+                <WonderlandInsight />
+            </div>
         </main>
     );
 }
