@@ -222,7 +222,7 @@ export default async function TeaPartyPage() {
             </p>
             <h1 className="text-[clamp(2.3rem,6vw,3.7rem)] font-light text-[#e8e4d8] leading-[1.08] mb-4">
               The Enchanted<br />
-              <em className="font-semibold" style={{ color: "#f0c830" }}>Garden Journal</em>
+              <em className="font-semibold text-[#f0c830]">Garden Journal</em>
             </h1>
             <p className="text-[#5a9888] text-[1.05rem] font-light leading-relaxed max-w-[38ch] mx-auto">
               Let your thoughts ripple outward.<br />
@@ -232,20 +232,13 @@ export default async function TeaPartyPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 mb-10">
-            <div className="flex-1 h-px"
-              style={{ background: "linear-gradient(to right, transparent, rgba(74,152,128,0.32), transparent)" }} />
+            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(74,152,128,0.32),transparent)]" />
             <span className="text-lg">🍵</span>
-            <div className="flex-1 h-px"
-              style={{ background: "linear-gradient(to right, transparent, rgba(74,152,128,0.32), transparent)" }} />
+            <div className="flex-1 h-px bg-[linear-gradient(to_right,transparent,rgba(74,152,128,0.32),transparent)]" />
           </div>
 
           {/* Journal form card */}
-          <div className="rounded-3xl border p-6 md:p-8"
-            style={{
-              background: "rgba(6,18,14,0.72)",
-              backdropFilter: "blur(24px)",
-              borderColor: "rgba(80,160,100,0.18)",
-            }}>
+          <div className="rounded-3xl border border-[rgba(80,160,100,0.18)] p-6 md:p-8 bg-[rgba(6,18,14,0.72)] backdrop-blur-2xl">
             <JournalEntry userId="demo-user" />
           </div>
 
