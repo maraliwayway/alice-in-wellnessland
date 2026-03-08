@@ -199,6 +199,42 @@ const rippleOrigins = [
 ];
 const RIPPLE_COUNT = 4;
 
+function Koi({ color, bodyColor, scale = 1 }: {
+  color: string; bodyColor: string; scale?: number;
+}) {
+  return (
+    <g transform={`scale(${scale})`}>
+      <ellipse cx="0" cy="0" rx="18" ry="7" fill={bodyColor} opacity="0.92" />
+      <ellipse cx="16" cy="0" rx="6" ry="5.5" fill={color} opacity="0.95" />
+      <path d="M -18 0 L -28 -8 L -22 0 L -28 8 Z" fill={color} opacity="0.85" />
+      <path d="M -4 -7 Q 4 -16 10 -7" fill={color} opacity="0.6" />
+      <ellipse cx="2" cy="-2" rx="7" ry="4" fill={color} opacity="0.55" />
+      <circle cx="19" cy="-1.5" r="1.2" fill="#1a0a08" />
+    </g>
+  );
+}
+
+const koiDefs = [
+  {
+    id: "koi-red",
+    color: "#c84830", bodyColor: "#e05a3a", scale: 1.1,
+    path: "M 150 350 C 400 200, 800 450, 1100 320 C 1300 240, 1380 480, 1200 600 C 950 720, 500 580, 280 680 C 100 760, 50 500, 150 350 Z",
+    dur: "16s", delay: "0s",
+  },
+  {
+    id: "koi-gold",
+    color: "#d4a025", bodyColor: "#e8c040", scale: 0.9,
+    path: "M 900 200 C 1200 300, 1350 600, 1100 720 C 850 840, 550 700, 350 800 C 150 880, 80 640, 200 480 C 380 280, 700 100, 900 200 Z",
+    dur: "20s", delay: "5s",
+  },
+  {
+    id: "koi-white",
+    color: "#e8e4d8", bodyColor: "#f5f0e8", scale: 0.85,
+    path: "M 600 650 C 400 500, 200 300, 450 180 C 700 60, 1050 250, 1250 450 C 1400 600, 1250 780, 1000 820 C 750 860, 650 800, 600 650 Z",
+    dur: "24s", delay: "10s",
+  },
+];
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function TeaPartyPage() {
@@ -322,6 +358,23 @@ export default async function TeaPartyPage() {
                   }} />
               ))
             )}
+
+            {/* Koi motion paths (hidden) */}
+            <defs>
+              {koiDefs.map((koi) => (
+                <path key={koi.id} id={`${koi.id}-path`} d={koi.path} />
+              ))}
+            </defs>
+
+            {/* Koi fish */}
+            {koiDefs.map((koi) => (
+              <g key={koi.id} opacity="0.88">
+                <Koi color={koi.color} bodyColor={koi.bodyColor} scale={koi.scale} />
+                <animateMotion dur={koi.dur} repeatCount="indefinite" begin={koi.delay} rotate="auto">
+                  <mpath href={`#${koi.id}-path`} />
+                </animateMotion>
+              </g>
+            ))}
           </svg>
         </div>
 
